@@ -10,7 +10,6 @@
 
 @implementation MWCardView {
     MWCard *_cardData;
-    MWCardDefItem *_cardDefData;
     UIStackView *wordStack;
     NSLayoutConstraint *wordsCenterX;
     NSLayoutConstraint *wordsCenterY;
@@ -18,11 +17,10 @@
     UIButton *showAnswerButton;
 }
 
-- (instancetype)initWithCardData:(MWCard *)cardData andDefData:(MWCardDefItem *)cardDefData {
+- (instancetype)initWithCardData:(MWCard *)cardData {
     self = [super init];
     if (self) {
         _cardData = cardData;
-        _cardDefData = cardDefData;
     }
     return self;
 }
@@ -81,7 +79,7 @@
     [wordStack addArrangedSubview:front];
     
     UILabel *form = [[UILabel alloc] init];
-    form.text = _cardDefData.form;
+    form.text = _cardData.form;
     form.font = [UIFont systemFontOfSize:18 weight:UIFontWeightLight];
     form.textColor = [UIColor colorWithRed:0.59 green:0.59 blue:0.59 alpha:1.0];
     
@@ -89,7 +87,7 @@
     
     NSError *bcError = nil;
     NSRegularExpression *bcRegex = [NSRegularExpression regularExpressionWithPattern:@"\\{(bc)\\}" options:NSRegularExpressionCaseInsensitive error:&bcError];
-    NSString *meaning = [bcRegex stringByReplacingMatchesInString:_cardDefData.meaning options:0 range:NSMakeRange(0, _cardDefData.meaning.length) withTemplate:@""];
+    NSString *meaning = [bcRegex stringByReplacingMatchesInString:_cardData.meaning options:0 range:NSMakeRange(0, _cardData.meaning.length) withTemplate:@""];
     NSError *sxError = nil;
     NSRegularExpression *sxRegex = [NSRegularExpression regularExpressionWithPattern:@"\\{sx\\|([^\\|]+)\\|([^\\}]*)\\}" options:NSRegularExpressionCaseInsensitive error:&sxError];
     meaning = [sxRegex stringByReplacingMatchesInString:meaning options:0 range:NSMakeRange(0, meaning.length) withTemplate:@"($1)"];
@@ -106,8 +104,8 @@
     def.hidden = YES;
     //[def sizeToFit];
     
-    if (_cardDefData.examples.count > 0) {
-        for (NSString *example in _cardDefData.examples) {
+    if (_cardData.examples.count > 0) {
+        for (NSString *example in _cardData.examples) {
             NSError *error = nil;
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\{wi\\}([^\\{]+)\\{\\/wi\\}" options:NSRegularExpressionCaseInsensitive error:&error];
             NSArray *matches = [regex matchesInString:example options:0 range:NSMakeRange(0, example.length)];

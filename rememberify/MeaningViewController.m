@@ -190,14 +190,15 @@
     NSMutableArray *entries = [[NSMutableArray alloc] init];
     for (ChoosableDef* item in choosableDefs) {
         if (item.isActive) {
-            [entries addObject:@{@"form": item.type,
+            [entries addObject:@{@"word": _word,
+                                 @"form": item.type,
                                  @"headword": item.headword,
                                  @"meaning": item.item.def,
                                  @"examples": item.item.examples}];
         }
     }
     if ([entries count] > 0) {
-        [[Cards sharedInstance] addMWCardForWord:self->_word entries:entries];
+        [[Cards sharedInstance] addMWCards:entries];
      
         UpcomingPickingViewController *vc = [[UpcomingPickingViewController alloc] init];
         [self presentViewController:vc animated:YES completion:nil];

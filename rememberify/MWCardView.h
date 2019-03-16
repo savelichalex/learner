@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, CardQualityFeedback) {
 
 @property (nonatomic, weak) id<MWCardViewDelegate> delegate;
 
-- (instancetype)initWithCardData:(MWCard *)cardData andDefData:(MWCardDefItem *)cardDefData;
+- (instancetype)initWithCardData:(MWCard *)cardData;
 
 - (void)renderFrontInParent:(UIView *)parent;
 - (void)renderFrontInParent:(UIView *)parent belowView:(UIView *)prev;

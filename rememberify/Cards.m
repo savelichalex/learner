@@ -8,29 +8,11 @@
 
 #import "Cards.h"
 
-@implementation MWCardDefItem
-@end
-
 @implementation MWCard
 static NSString *cardType = @"MWCard";
 
 + (NSString *)type {
     return cardType;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _defs = [[NSMutableArray alloc] init];
-    }
-    return self;
-}
-
-- (MWCardDefItem *)getRandomDefinition {
-    NSUInteger randomIndex = arc4random() % _defs.count;
-    
-    return _defs[randomIndex];
 }
 
 @end
@@ -56,19 +38,17 @@ static NSString *cardType = @"MWCard";
     return sharedInstance;
 }
 
-- (void)addMWCardForWord:(NSString *)word entries:(NSArray<NSDictionary *>*)entries {
-    MWCard *card = [[MWCard alloc] init];
-    [card setFront:word];
+- (void)addMWCards:(NSArray<NSDictionary *>*)entries {
     for (NSDictionary *dict in entries) {
-        MWCardDefItem *cardDefItem = [[MWCardDefItem alloc] init];
-        [cardDefItem setForm:[dict objectForKey:@"form"]];
-        [cardDefItem setHeadword:[dict objectForKey:@"headword"]];
-        [cardDefItem setMeaning:[dict objectForKey:@"meaning"]];
-        [cardDefItem setExamples:[dict objectForKey:@"examples"]];
-        
-        [card.defs addObject:cardDefItem];
+        MWCard *card = [[MWCard alloc] init];
+        [card setFront:[dict objectForKey:@"word"]];
+        [card setForm:[dict objectForKey:@"form"]];
+        [card setHeadword:[dict objectForKey:@"headword"]];
+        [card setMeaning:[dict objectForKey:@"meaning"]];
+        [card setExamples:[dict objectForKey:@"examples"]];
+         
+        [(NSMutableArray *)_upcoming addObject:card];
     }
-    [(NSMutableArray *)_upcoming addObject:card];
 }
 
 

@@ -16,7 +16,6 @@
 @implementation UpcomingPickingViewController {
     NSInteger index;
     MWCard *intermediateCard; // TODO: polimorphic type
-    MWCardDefItem *intermediateDef;
     
     UIView *cardsWrapper;
     
@@ -41,10 +40,6 @@
     [super viewDidLoad];
     
     [self setNeedsStatusBarAppearanceUpdate];
-    
-    NSArray *upcoming = [[Cards sharedInstance] upcoming];
-    intermediateCard = upcoming[index];
-    intermediateDef = [intermediateCard getRandomDefinition];
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.bounds;
@@ -96,13 +91,22 @@
     [cardsWrapper.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant:-15].active = YES;
     [cardsWrapper.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-20].active = YES;
     
-    firstCard = [[MWCardView alloc] initWithCardData:intermediateCard andDefData:intermediateDef];
-    firstCard.delegate = self;
-    secondCard = [[MWCardView alloc] initWithCardData:intermediateCard andDefData:intermediateDef];
-    secondCard.delegate = self;
+    NSArray *upcoming = [[Cards sharedInstance] upcoming];
+    if (upcoming.count >= index + 1) {
+        firstCard = [[MWCardView alloc] initWithCardData:upcoming[index]];
+        firstCard.delegate = self;
     
-    [firstCard renderFrontInParent:cardsWrapper];
-    [secondCard renderFrontInParent:cardsWrapper belowView:firstCard];
+        [firstCard renderFrontInParent:cardsWrapper];
+    }
+    
+    if (upcoming.count >= index + 2) {
+        secondCard = [[MWCardView alloc] initWithCardData:upcoming[index + 1]];
+        secondCard.delegate = self;
+    
+        [secondCard renderFrontInParent:cardsWrapper belowView:firstCard];
+        
+        index = index + 1;
+    }
 }
 
 + (UIImage *)imageFromSystemBarButon:(UIBarButtonSystemItem)systemItem {
@@ -122,13 +126,22 @@
 }
 
 - (void)onAnswerQualityFeedback:(CardQualityFeedback)quality {
-    thirdCard = [[MWCardView alloc] initWithCardData:intermediateCard andDefData:intermediateDef];
-    thirdCard.delegate = self;
-    [thirdCard renderFrontInParent:cardsWrapper belowView:secondCard];
-    [secondCard moveToFront:^(BOOL finished) {
-        self->firstCard = self->secondCard;
-        self->secondCard = self->thirdCard;
-    }];
+    NSArray *upcoming = [[Cards sharedInstance] upcoming];
+    
+    if (upcoming.count >= index + 2) {
+        thirdCard = [[MWCardView alloc] initWithCardData:upcoming[index + 1]];
+        thirdCard.delegate = self;
+        [thirdCard renderFrontInParent:cardsWrapper belowView:secondCard];
+    }
+    if (upcoming.count >= index + 1) {
+        [secondCard moveToFront:^(BOOL finished) {
+            self->firstCard = self->secondCard;
+            if (upcoming.count >= self->index + 2) {
+                self->secondCard = self->thirdCard;
+            }
+            self->index = self->index + 1;
+        }];
+    }
 }
 
 - (void)onClose:(UIButton *)button {
