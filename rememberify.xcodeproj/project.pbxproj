@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */; };
+		84AF18612233ECAF0026DEB3 /* Cards.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF18602233ECAF0026DEB3 /* Cards.m */; };
+		84AF1864223410650026DEB3 /* UpcomingPickingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */; };
+		84AF1867223520E60026DEB3 /* MWCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF1866223520E60026DEB3 /* MWCardView.m */; };
 		84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966DD222563A9002C3A08 /* AppDelegate.m */; };
 		84B966E1222563A9002C3A08 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966E0222563A9002C3A08 /* ViewController.m */; };
 		84B966E4222563A9002C3A08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E2222563A9002C3A08 /* Main.storyboard */; };
@@ -14,9 +18,21 @@
 		84B966E9222563AB002C3A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E8222563AB002C3A08 /* Assets.xcassets */; };
 		84B966EC222563AB002C3A08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966EA222563AB002C3A08 /* LaunchScreen.storyboard */; };
 		84B966EF222563AB002C3A08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966EE222563AB002C3A08 /* main.m */; };
+		84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966F62225640F002C3A08 /* DictionaryApiParser.m */; };
+		84B966F922269DC4002C3A08 /* appeal.json in Resources */ = {isa = PBXBuildFile; fileRef = 84B966F822269DC4002C3A08 /* appeal.json */; };
+		84F07608222C134200E8008C /* MeaningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F07607222C134200E8008C /* MeaningViewController.m */; };
+		84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F0760A222F178700E8008C /* ChoosableLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		84AF185C2233BF3A0026DEB3 /* ChoosableDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChoosableDef.h; sourceTree = "<group>"; };
+		84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableDef.m; sourceTree = "<group>"; };
+		84AF185F2233ECAF0026DEB3 /* Cards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cards.h; sourceTree = "<group>"; };
+		84AF18602233ECAF0026DEB3 /* Cards.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cards.m; sourceTree = "<group>"; };
+		84AF1862223410650026DEB3 /* UpcomingPickingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpcomingPickingViewController.h; sourceTree = "<group>"; };
+		84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpcomingPickingViewController.m; sourceTree = "<group>"; };
+		84AF1865223520E60026DEB3 /* MWCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWCardView.h; sourceTree = "<group>"; };
+		84AF1866223520E60026DEB3 /* MWCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWCardView.m; sourceTree = "<group>"; };
 		84B966D9222563A9002C3A08 /* rememberify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rememberify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B966DC222563A9002C3A08 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84B966DD222563A9002C3A08 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -28,6 +44,13 @@
 		84B966EB222563AB002C3A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84B966ED222563AB002C3A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B966EE222563AB002C3A08 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		84B966F52225640F002C3A08 /* DictionaryApiParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryApiParser.h; sourceTree = "<group>"; };
+		84B966F62225640F002C3A08 /* DictionaryApiParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryApiParser.m; sourceTree = "<group>"; };
+		84B966F822269DC4002C3A08 /* appeal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = appeal.json; sourceTree = "<group>"; };
+		84F07606222C134200E8008C /* MeaningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeaningViewController.h; sourceTree = "<group>"; };
+		84F07607222C134200E8008C /* MeaningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeaningViewController.m; sourceTree = "<group>"; };
+		84F07609222F178700E8008C /* ChoosableLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChoosableLabel.h; sourceTree = "<group>"; };
+		84F0760A222F178700E8008C /* ChoosableLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +93,21 @@
 				84B966ED222563AB002C3A08 /* Info.plist */,
 				84B966EE222563AB002C3A08 /* main.m */,
 				84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */,
+				84B966F52225640F002C3A08 /* DictionaryApiParser.h */,
+				84B966F62225640F002C3A08 /* DictionaryApiParser.m */,
+				84B966F822269DC4002C3A08 /* appeal.json */,
+				84F07606222C134200E8008C /* MeaningViewController.h */,
+				84F07607222C134200E8008C /* MeaningViewController.m */,
+				84F07609222F178700E8008C /* ChoosableLabel.h */,
+				84F0760A222F178700E8008C /* ChoosableLabel.m */,
+				84AF185C2233BF3A0026DEB3 /* ChoosableDef.h */,
+				84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */,
+				84AF185F2233ECAF0026DEB3 /* Cards.h */,
+				84AF18602233ECAF0026DEB3 /* Cards.m */,
+				84AF1862223410650026DEB3 /* UpcomingPickingViewController.h */,
+				84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */,
+				84AF1865223520E60026DEB3 /* MWCardView.h */,
+				84AF1866223520E60026DEB3 /* MWCardView.m */,
 			);
 			path = rememberify;
 			sourceTree = "<group>";
@@ -132,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84B966EC222563AB002C3A08 /* LaunchScreen.storyboard in Resources */,
+				84B966F922269DC4002C3A08 /* appeal.json in Resources */,
 				84B966E9222563AB002C3A08 /* Assets.xcassets in Resources */,
 				84B966E4222563A9002C3A08 /* Main.storyboard in Resources */,
 			);
@@ -144,8 +183,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84AF18612233ECAF0026DEB3 /* Cards.m in Sources */,
+				84AF1867223520E60026DEB3 /* MWCardView.m in Sources */,
+				84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */,
+				84AF1864223410650026DEB3 /* UpcomingPickingViewController.m in Sources */,
+				84F07608222C134200E8008C /* MeaningViewController.m in Sources */,
 				84B966E1222563A9002C3A08 /* ViewController.m in Sources */,
 				84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */,
+				84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */,
+				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,
 				84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */,
 			);
