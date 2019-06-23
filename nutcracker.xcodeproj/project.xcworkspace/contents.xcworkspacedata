@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:rememberify.xcodeproj">
+      location = "self:/Users/savelichalex/work/nutcracker/nutcracker.xcodeproj">
    </FileRef>
 </Workspace>
