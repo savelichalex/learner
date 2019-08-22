@@ -41,16 +41,18 @@
     
     [self setNeedsStatusBarAppearanceUpdate];
     
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.view.bounds;
-    gradient.startPoint = CGPointMake(0.0, 0.0);
-    gradient.endPoint = CGPointMake(1.0, 1.0);
-    gradient.colors = @[
-                        (id)[UIColor colorWithRed:0.61 green:0.88 blue:0.36 alpha:1.0].CGColor,
-                        (id)[UIColor colorWithRed:0.00 green:0.89 blue:0.68 alpha:1.0].CGColor
-                        ];
+    [self.view setBackgroundColor:[UIColor colorWithRed:0.70 green:0.60 blue:1.00 alpha:1.0]];
     
-    [self.view.layer insertSublayer:gradient atIndex:0];
+//    CAGradientLayer *gradient = [CAGradientLayer layer];
+//    gradient.frame = self.view.bounds;
+//    gradient.startPoint = CGPointMake(0.0, 0.0);
+//    gradient.endPoint = CGPointMake(1.0, 1.0);
+//    gradient.colors = @[
+//                        (id)[UIColor colorWithRed:0.70 green:0.60 blue:1.00 alpha:1.0].CGColor,
+//                        (id)[UIColor colorWithRed:0.70 green:0.60 blue:1.00 alpha:1.0].CGColor
+//                        ];
+//
+//    [self.view.layer insertSublayer:gradient atIndex:0];
     
     UIView *buttons = [[UIView alloc] init];
     buttons.translatesAutoresizingMaskIntoConstraints = NO;
@@ -87,9 +89,9 @@
     [self.view addSubview:cardsWrapper];
     
     [cardsWrapper.topAnchor constraintEqualToAnchor:buttons.bottomAnchor].active = YES;
-    [cardsWrapper.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:15].active = YES;
-    [cardsWrapper.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant:-15].active = YES;
-    [cardsWrapper.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-20].active = YES;
+    [cardsWrapper.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [cardsWrapper.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [cardsWrapper.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:20].active = YES;
     
     NSArray *upcoming = [[Cards sharedInstance] upcoming];
     if (upcoming.count >= index + 1) {

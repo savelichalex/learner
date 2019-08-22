@@ -22,6 +22,9 @@
 		84B966F922269DC4002C3A08 /* appeal.json in Resources */ = {isa = PBXBuildFile; fileRef = 84B966F822269DC4002C3A08 /* appeal.json */; };
 		84F07608222C134200E8008C /* MeaningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F07607222C134200E8008C /* MeaningViewController.m */; };
 		84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F0760A222F178700E8008C /* ChoosableLabel.m */; };
+		A60219CC22C0D1EA0082ACE3 /* download.m in Sources */ = {isa = PBXBuildFile; fileRef = A60219CB22C0D1EA0082ACE3 /* download.m */; };
+		A60219CF22C113B10082ACE3 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A60219CE22C113B10082ACE3 /* libxml2.tbd */; };
+		A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A641C182230DA8D3002A5974 /* HomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +54,10 @@
 		84F07607222C134200E8008C /* MeaningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeaningViewController.m; sourceTree = "<group>"; };
 		84F07609222F178700E8008C /* ChoosableLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChoosableLabel.h; sourceTree = "<group>"; };
 		84F0760A222F178700E8008C /* ChoosableLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableLabel.m; sourceTree = "<group>"; };
+		A60219CB22C0D1EA0082ACE3 /* download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = download.m; sourceTree = SOURCE_ROOT; };
+		A60219CE22C113B10082ACE3 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		A641C181230DA8D3002A5974 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		A641C182230DA8D3002A5974 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A60219CF22C113B10082ACE3 /* libxml2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +77,7 @@
 			children = (
 				84B966DB222563A9002C3A08 /* nutcracker */,
 				84B966DA222563A9002C3A08 /* Products */,
+				A60219CD22C113B00082ACE3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,6 +92,7 @@
 		84B966DB222563A9002C3A08 /* nutcracker */ = {
 			isa = PBXGroup;
 			children = (
+				A60219CB22C0D1EA0082ACE3 /* download.m */,
 				84B966DC222563A9002C3A08 /* AppDelegate.h */,
 				84B966DD222563A9002C3A08 /* AppDelegate.m */,
 				84B966DF222563A9002C3A08 /* ViewController.h */,
@@ -108,8 +118,18 @@
 				84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */,
 				84AF1865223520E60026DEB3 /* MWCardView.h */,
 				84AF1866223520E60026DEB3 /* MWCardView.m */,
+				A641C181230DA8D3002A5974 /* HomeViewController.h */,
+				A641C182230DA8D3002A5974 /* HomeViewController.m */,
 			);
 			path = nutcracker;
+			sourceTree = "<group>";
+		};
+		A60219CD22C113B00082ACE3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A60219CE22C113B10082ACE3 /* libxml2.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,8 +212,10 @@
 				84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */,
 				84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */,
 				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
+				A60219CC22C0D1EA0082ACE3 /* download.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,
 				84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */,
+				A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +360,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 59EFNSJ7X2;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "$(SRCROOT)/nutcracker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -357,6 +380,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 59EFNSJ7X2;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "$(SRCROOT)/nutcracker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

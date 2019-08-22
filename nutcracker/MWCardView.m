@@ -28,6 +28,7 @@
 - (void)applyStyles {
     self.backgroundColor = [UIColor whiteColor];
     [self.layer setCornerRadius:20];
+    // [self.layer setMaskedCorners:kCALayerMinXMinYCorner|kCALayerMaxXMinYCorner];
     [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
     [self.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
     [self.layer setShadowRadius:4.0];
