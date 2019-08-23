@@ -45,6 +45,9 @@
     
     CGFloat inactiveCardY;
     CGFloat activeCardY;
+    
+    // tab bar
+    UIView *tabBar;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -86,7 +89,7 @@
     [searchBarContainer.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor].active = YES;
     [searchBarContainer.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [searchBarContainer.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    [searchBarContainer.bottomAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
+    [searchBarContainer.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.33f].active = YES;
     
     searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
@@ -128,7 +131,7 @@
     
     [self.view addSubview:cardLike];
     
-    cardLikeTopInactive = [cardLike.topAnchor constraintEqualToAnchor:self.view.centerYAnchor];
+    cardLikeTopInactive = [cardLike.topAnchor constraintEqualToAnchor:searchBarContainer.bottomAnchor];
     cardLikeTopSearchActive = [cardLike.topAnchor constraintEqualToAnchor:self->searchBar.bottomAnchor constant:10];
     cardLikeTopLearnActive = [cardLike.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10];
     
@@ -193,6 +196,50 @@
 //    [content.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
 //
 //    [content render];
+    
+    // tab bar
+    tabBar = [[UIView alloc] init];
+    
+    tabBar.backgroundColor = [UIColor colorNamed:@"tabBar"];
+    [tabBar.layer setCornerRadius:20];
+    tabBar.layer.maskedCorners = kCALayerMaxXMinYCorner|kCALayerMinXMinYCorner;
+    [tabBar.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+    [tabBar.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
+    [tabBar.layer setShadowRadius:10.0];
+    [tabBar.layer setShadowOpacity:0.05];
+    tabBar.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addSubview:tabBar];
+    
+    [tabBar.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [tabBar.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [tabBar.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    
+    UILabel *homeTabView = [[UILabel alloc] init];
+    homeTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    homeTabView.text = @"Home";
+    homeTabView.textAlignment = NSTextAlignmentCenter;
+    UILabel *wordsTabView = [[UILabel alloc] init];
+    wordsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    wordsTabView.text = @"Words";
+    wordsTabView.textAlignment = NSTextAlignmentCenter;
+    UILabel *statsTabView = [[UILabel alloc] init];
+    statsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    statsTabView.text = @"Stats";
+    statsTabView.textAlignment = NSTextAlignmentCenter;
+    
+    UIStackView *tabsRow = [[UIStackView alloc] initWithArrangedSubviews:@[homeTabView, wordsTabView, statsTabView]];
+    tabsRow.translatesAutoresizingMaskIntoConstraints = NO;
+    [tabsRow setAxis:UILayoutConstraintAxisHorizontal];
+    [tabsRow setAlignment:UIStackViewAlignmentFirstBaseline];
+    [tabsRow setDistribution:UIStackViewDistributionFillProportionally];
+    
+    [tabBar addSubview:tabsRow];
+    
+    [tabsRow.topAnchor constraintEqualToAnchor:tabBar.topAnchor constant:20].active = YES;
+    [tabsRow.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor].active = YES;
+    [tabsRow.leftAnchor constraintEqualToAnchor:tabBar.leftAnchor constant:20].active = YES;
+    [tabsRow.rightAnchor constraintEqualToAnchor:tabBar.rightAnchor constant:-20].active = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -394,6 +441,8 @@
         self->cardLikeTopInactive.active = NO;
         self->cardLikeTopLearnActive.active = YES;
         
+        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        
         [self.view layoutIfNeeded];
     }];
     
@@ -412,6 +461,8 @@
         
         self->cardLikeTopLearnActive.active = NO;
         self->cardLikeTopInactive.active = YES;
+        
+        [self->tabBar setTransform:CGAffineTransformIdentity];
         
         [self.view layoutIfNeeded];
     }];
@@ -432,6 +483,9 @@
         self->cardLikeTopSearchActive.active = YES;
         
         self->tableView.layer.opacity = 1.0;
+        
+        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        
         [self.view layoutIfNeeded];
     }];
     
@@ -452,6 +506,9 @@
         self->cardLikeTopInactive.active = YES;
         
         self->tableView.layer.opacity = 0.0;
+        
+        [self->tabBar setTransform:CGAffineTransformIdentity];
+        
         [self.view layoutIfNeeded];
     }];
     
@@ -481,6 +538,9 @@
         self->cardLikeTopSearchActive.active = YES;
         
         self->meaningVC.view.layer.opacity = 1.0;
+        
+        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        
         [self.view layoutIfNeeded];
     }];
     
@@ -508,6 +568,9 @@
         self->cardLikeTopInactive.active = YES;
         
         self->meaningVC.view.layer.opacity = 0.0;
+        
+        [self->tabBar setTransform:CGAffineTransformIdentity];
+        
         [self.view layoutIfNeeded];
     }];
     
