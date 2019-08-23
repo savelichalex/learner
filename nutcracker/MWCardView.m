@@ -25,24 +25,6 @@
     return self;
 }
 
-- (void)applyStyles {
-    self.backgroundColor = [UIColor whiteColor];
-    [self.layer setCornerRadius:20];
-    // [self.layer setMaskedCorners:kCALayerMinXMinYCorner|kCALayerMaxXMinYCorner];
-    [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [self.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
-    [self.layer setShadowRadius:4.0];
-    [self.layer setShadowOpacity:0.1];
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-}
-
-- (void)fitInParent:(UIView *)parent {
-    [self.leftAnchor constraintEqualToAnchor:parent.leftAnchor].active = YES;
-    [self.topAnchor constraintEqualToAnchor:parent.topAnchor constant:10].active = YES;
-    [self.rightAnchor constraintEqualToAnchor:parent.rightAnchor].active = YES;
-    [self.bottomAnchor constraintEqualToAnchor:parent.bottomAnchor].active = YES;
-}
-
 - (UIButton *)getStyledButton:(NSString *)title {
     UIButton *button = [[UIButton alloc] init];
     [button setTitle:title forState:UIControlStateNormal];
@@ -147,39 +129,45 @@
     [showAnswerButton addTarget:self action:@selector(onShowAnswerTap:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)renderFrontInParent:(UIView *)parent {
-    [self applyStyles];
-    [parent addSubview:self];
-    [self fitInParent:parent];
+- (void)render {
     [self renderData];
 }
 
-- (void)renderFrontInParent:(UIView *)parent belowView:(UIView *)prev {
-    [self applyStyles];
-    [parent insertSubview:self belowSubview:prev];
-    [self fitInParent:parent];
-    
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    
-    [self setTransform:CGAffineTransformConcat(
-        CGAffineTransformMakeScale(0.85, 0.85),
-        CGAffineTransformMakeTranslation(
-            0,
-            -(self.bounds.size.height * 0.075 + 10)
-        )
-    )];
-    
-    [self renderData];
-}
+//- (void)renderFrontInParent:(UIView *)parent {
+//    [self applyStyles];
+//    [parent addSubview:self];
+//    [self fitInParent:parent];
+//    [self renderData];
+//}
+//
+//- (void)renderFrontInParent:(UIView *)parent belowView:(UIView *)prev {
+//    [self applyStyles];
+//    [parent insertSubview:self belowSubview:prev];
+//    [self fitInParent:parent];
+//
+//    [self setNeedsLayout];
+//    [self layoutIfNeeded];
+//
+//    [self setTransform:CGAffineTransformConcat(
+//        CGAffineTransformMakeScale(0.85, 0.85),
+//        CGAffineTransformMakeTranslation(
+//            0,
+//            -(self.bounds.size.height * 0.075 + 10)
+//        )
+//    )];
+//
+//    [self renderData];
+//}
 
 - (void)moveAway:(void (^)(BOOL))completion {
+    return;
     [UIView animateWithDuration:0.3 animations:^{
         [self setTransform:CGAffineTransformMakeTranslation(-1 * (self.bounds.size.width + 100), 0)];
     } completion:completion];
 }
 
 - (void)moveToFront:(void (^)(BOOL))completion {
+    return;
     [UIView animateWithDuration:0.35 animations:^{
         [self setTransform:CGAffineTransformIdentity];
     } completion:completion];

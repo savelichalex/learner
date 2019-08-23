@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, CardQualityFeedback) {
 
 - (instancetype)initWithCardData:(MWCard *)cardData;
 
+- (void)render;
 - (void)renderFrontInParent:(UIView *)parent;
 - (void)renderFrontInParent:(UIView *)parent belowView:(UIView *)prev;
 

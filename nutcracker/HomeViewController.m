@@ -7,6 +7,8 @@
 //
 
 #import "HomeViewController.h"
+#import "MWCardView.h"
+#import "Cards.h"
 
 @interface HomeViewController ()
 
@@ -29,6 +31,10 @@
     UITableView *tableView;
     BOOL isSearching;
     CGFloat activeInSearchCardY;
+    
+    // new word
+    UILabel *meaningTitle;
+    UIButton *backButton;
     
     // learn
     UIViewPropertyAnimator *animator;
@@ -65,7 +71,7 @@
     
     [self setNeedsStatusBarAppearanceUpdate];
     
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.70 green:0.60 blue:1.00 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorNamed:@"mainBackground"]];
     
     [recognizer addTarget:self action:@selector(pullerPanned:)];
     
@@ -87,6 +93,8 @@
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     
+    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    searchField.backgroundColor = [UIColor colorNamed:@"card"];
     for (UIView* subview in [[searchBar.subviews lastObject] subviews]) {
         if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
             [subview setAlpha:0.0];
@@ -96,7 +104,7 @@
     
     [searchBarContainer addSubview:searchBar];
     
-    searchBarYActive = [searchBar.topAnchor constraintEqualToAnchor:searchBarContainer.topAnchor constant:20];
+    searchBarYActive = [searchBar.topAnchor constraintEqualToAnchor:searchBarContainer.topAnchor];
     searchBarYInactive = [searchBar.centerYAnchor constraintEqualToAnchor:searchBarContainer.centerYAnchor];
     
     searchBarYInactive.active = YES;
@@ -107,7 +115,7 @@
     // second half
     cardLike = [[UIView alloc] init];
     
-    cardLike.backgroundColor = [UIColor whiteColor];
+    cardLike.backgroundColor = [UIColor colorNamed:@"card"];
     [cardLike.layer setCornerRadius:20];
     [cardLike.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
     [cardLike.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
@@ -154,11 +162,33 @@
     // autocomplete
     
     tableView = [[UITableView alloc] init];
+    tableView.backgroundColor = [UIColor clearColor];
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
     tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 15);
     
     tableView.delegate = self;
     tableView.dataSource = self;
+    
+    // card content
+    
+//    [[Cards sharedInstance] addMWCards:@[@{
+//                                             @"word": @"allow",
+//                                             @"form": @"noun",
+//                                             @"headword": @"some headword",
+//                                             @"meaning": @"this is when you agree that someone will do smth"
+//                                             }]];
+//
+//    MWCardView *content = [[MWCardView alloc] initWithCardData:[[Cards sharedInstance] upcoming][0]];
+//    content.translatesAutoresizingMaskIntoConstraints = NO;
+//
+//    [cardLike addSubview:content];
+//
+//    [content.topAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor].active = YES;
+//    [content.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor].active = YES;
+//    [content.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
+//    [content.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
+//
+//    [content render];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -187,6 +217,7 @@
         self->searchBarYActive.active = YES;
         self->cardLikeTopInactive.active = NO;
         self->cardLikeTopSearchActive.active = YES;
+        self->cardLikeTopLearnActive.active = NO;
         self->tableView.layer.opacity = 1.0;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -202,6 +233,7 @@
         self->searchBarYActive.active = NO;
         self->cardLikeTopInactive.active = YES;
         self->cardLikeTopSearchActive.active = NO;
+        self->cardLikeTopLearnActive.active = NO;
         self->tableView.layer.opacity = 0.0;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -237,6 +269,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.backgroundColor = [UIColor clearColor];
     }
     cell.textLabel.text = [words objectAtIndex:indexPath.row];
     cell.textLabel.textColor = [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:1.0];
@@ -245,12 +278,77 @@
     return cell;
 }
 
+- (void)renderWordMeaning {
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [searchBar resignFirstResponder];
+    meaningTitle = [[UILabel alloc] init];
+    meaningTitle.translatesAutoresizingMaskIntoConstraints = NO;
+    meaningTitle.text = [words objectAtIndex:indexPath.row];
+    meaningTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold];
+    meaningTitle.textColor = [UIColor whiteColor];
+    
+    //[searchBarContainer insertSubview:meaningTitle belowSubview:searchBar];
+    [searchBarContainer addSubview:meaningTitle];
+    
+    [meaningTitle.centerYAnchor constraintEqualToAnchor:searchBar.centerYAnchor].active = YES;
+    [meaningTitle.centerXAnchor constraintEqualToAnchor:searchBarContainer.centerXAnchor].active = YES;
+    
+    [meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+    
+    meaningTitle.layer.opacity = 0.0;
+    
+    UIImage *backImage = [UIImage imageNamed:@"BackIcon"];
+    backButton = [[UIButton alloc] init];
+    backButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [backButton.imageView setTintColor:[UIColor whiteColor]];
+    [backButton addTarget:self action:@selector(goBackToSearch) forControlEvents:UIControlEventTouchUpInside];
+    backButton.layer.opacity = 0.0;
+    
+    [searchBarContainer addSubview:backButton];
+    
+    [backButton.leftAnchor constraintEqualToAnchor:searchBar.leftAnchor].active = YES;
+    [backButton.centerYAnchor constraintEqualToAnchor:searchBar.centerYAnchor].active = YES;
+    [backButton.widthAnchor constraintEqualToConstant:20].active = YES;
+    [backButton.heightAnchor constraintEqualToConstant:20].active = YES;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [self->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation(-1 * (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+        self->searchBar.layer.opacity = 0.0;
+        [self->meaningTitle setTransform:CGAffineTransformIdentity];
+        self->meaningTitle.layer.opacity = 1.0;
+        self->backButton.layer.opacity = 1.0;
+        [self->tableView setTransform:CGAffineTransformMakeTranslation(-1 * (self->cardLike.bounds.size.width), 0)];
+        self->tableView.layer.opacity = 0.0;
+    }];
+}
+
+- (void)goBackToSearch {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self->searchBar setTransform:CGAffineTransformIdentity];
+        self->searchBar.layer.opacity = 1.0;
+        [self->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+        self->meaningTitle.layer.opacity = 0.0;
+        self->backButton.layer.opacity = 0.0;
+        [self->tableView setTransform:CGAffineTransformIdentity];
+        self->tableView.layer.opacity = 1.0;
+    } completion:^(BOOL finished) {
+        [self->meaningTitle removeFromSuperview];
+        [self->backButton removeFromSuperview];
+    }];
+}
+
 - (void)openCard {
     [animator addAnimations:^{
         self->searchBarYInactive.active = NO;
         self->searchBarYActive.active = YES;
         self->searchBar.layer.opacity = 0.0;
         self->cardLikeTopInactive.active = NO;
+        self->cardLikeTopSearchActive.active = NO;
         self->cardLikeTopLearnActive.active = YES;
         [self.view layoutIfNeeded];
     }];
@@ -268,6 +366,7 @@
         self->searchBarYActive.active = NO;
         self->searchBar.layer.opacity = 1.0;
         self->cardLikeTopInactive.active = YES;
+        self->cardLikeTopSearchActive.active = NO;
         self->cardLikeTopLearnActive.active = NO;
         [self.view layoutIfNeeded];
     }];
@@ -285,6 +384,7 @@
         self->searchBarYActive.active = NO;
         self->cardLikeTopInactive.active = YES;
         self->cardLikeTopSearchActive.active = NO;
+        self->cardLikeTopLearnActive.active = NO;
         self->tableView.layer.opacity = 0.0;
         [self.view layoutIfNeeded];
     }];
@@ -330,7 +430,7 @@
         CGPoint translation = [recognizer translationInView:self.view];
         CGPoint velocity = [recognizer velocityInView:self.view];
         if (isSearching) {
-            CGFloat factor = translation.y / (inactiveCardY - activeInSearchCardY);
+            //CGFloat factor = translation.y / (inactiveCardY - activeInSearchCardY);
             [animator continueAnimationWithTimingParameters:nil durationFactor:0];
         } else {
             CGFloat factor = translation.y / (inactiveCardY - activeCardY);
@@ -349,15 +449,5 @@
         return;
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
