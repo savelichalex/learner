@@ -32,9 +32,6 @@
         
         [DictionaryApiParser processJSON:json withCallback:^(NSArray * _Nonnull forms) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationItem setTitle:[word uppercaseString]];
-                self.view.backgroundColor = [UIColor whiteColor];
-                
                 UIScrollView *sv = [[UIScrollView alloc] init];
                 sv.translatesAutoresizingMaskIntoConstraints = NO;
                 
@@ -64,7 +61,7 @@
                 
                 [svInner addSubview:wrapperStack];
                 
-                [wrapperStack.topAnchor constraintEqualToAnchor:svInner.topAnchor constant:20].active = YES;
+                [wrapperStack.topAnchor constraintEqualToAnchor:svInner.topAnchor].active = YES;
                 [wrapperStack.leftAnchor constraintEqualToAnchor:svInner.leftAnchor constant:15].active = YES;
                 [wrapperStack.rightAnchor constraintEqualToAnchor:svInner.rightAnchor constant:-15].active = YES;
                 [wrapperStack.bottomAnchor constraintEqualToAnchor:svInner.bottomAnchor constant:-20].active = YES;
@@ -76,12 +73,6 @@
                     
                     UIView *wrapperSectionItem = [[UIView alloc] init];
                     wrapperSectionItem.translatesAutoresizingMaskIntoConstraints = NO;
-                    wrapperSectionItem.backgroundColor = [UIColor whiteColor];
-                    wrapperSectionItem.layer.cornerRadius = 20;
-                    [wrapperSectionItem.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-                    [wrapperSectionItem.layer setShadowOffset:CGSizeMake(0.0, 5.0)];
-                    [wrapperSectionItem.layer setShadowRadius:5.0];
-                    [wrapperSectionItem.layer setShadowOpacity:0.3];
                     
                     [wrapperStack addArrangedSubview:wrapperSectionItem];
                     
@@ -155,7 +146,7 @@
                     [wrapperSectionItem.rightAnchor constraintEqualToAnchor:wrapperStack.rightAnchor].active = YES;
                     [wrapperSectionItem.heightAnchor constraintEqualToAnchor:sectionItem.heightAnchor constant:40].active = YES;
                     
-                    [sectionItem.topAnchor constraintEqualToAnchor:wrapperSectionItem.topAnchor constant:20].active = YES;
+                    [sectionItem.topAnchor constraintEqualToAnchor:wrapperSectionItem.topAnchor].active = YES;
                     [sectionItem.leftAnchor constraintEqualToAnchor:wrapperSectionItem.leftAnchor constant:20].active = YES;
                     [sectionItem.rightAnchor constraintEqualToAnchor:wrapperSectionItem.rightAnchor constant:-20].active = YES;
                     [sectionItem.bottomAnchor constraintEqualToAnchor:wrapperSectionItem.bottomAnchor constant:-20].active = YES;
@@ -164,27 +155,6 @@
         }];
     }
     return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAdd)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    self.navigationController.navigationBar.translucent = YES;
-    
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.70 green:0.60 blue:1.00 alpha:1.0]];
-    
-//    CAGradientLayer *gradient = [CAGradientLayer layer];
-//    gradient.frame = self.view.bounds;
-//    gradient.startPoint = CGPointMake(0.0, 0.0);
-//    gradient.endPoint = CGPointMake(1.0, 1.0);
-//    gradient.colors = @[
-//                        (id)[UIColor colorWithRed:0.55 green:0.53 blue:0.62 alpha:1.0].CGColor,
-//                        (id)[UIColor colorWithRed:0.39 green:0.34 blue:0.52 alpha:1.0].CGColor
-//                        ];
-//    
-//    [self.view.layer insertSublayer:gradient atIndex:0];
 }
 
 - (void)onAdd {

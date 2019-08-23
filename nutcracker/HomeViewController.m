@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "MWCardView.h"
 #import "Cards.h"
+#import "MeaningViewController.h"
 
 @interface HomeViewController ()
 
@@ -24,6 +25,7 @@
     NSLayoutConstraint *cardLikeTopSearchActive;
     NSLayoutConstraint *cardLikeTopLearnActive;
     UIView *cardLikePullBar;
+    UILayoutGuide *cardLikeContent;
     
     // search
     UITextChecker *textChecker;
@@ -35,6 +37,7 @@
     // new word
     UILabel *meaningTitle;
     UIButton *backButton;
+    UIViewController *meaningVC;
     
     // learn
     UIViewPropertyAnimator *animator;
@@ -138,7 +141,7 @@
     // card pull bar
     UIView *cardLikePullBarInner = [[UIView alloc] init];
     cardLikePullBarInner.translatesAutoresizingMaskIntoConstraints = NO;
-    cardLikePullBarInner.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1.0];
+    cardLikePullBarInner.backgroundColor = [UIColor colorNamed:@"puller"];
     [cardLikePullBarInner.layer setCornerRadius:3];
     
     cardLikePullBar = [[UIView alloc] init];
@@ -158,6 +161,15 @@
     [cardLikePullBar.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
     
     [cardLikePullBar addGestureRecognizer:recognizer];
+    
+    cardLikeContent = [[UILayoutGuide alloc] init];
+    
+    [cardLike addLayoutGuide:cardLikeContent];
+    
+    [cardLikeContent.topAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor constant:10].active = YES;
+    [cardLikeContent.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor].active = YES;
+    [cardLikeContent.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
+    [cardLikeContent.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
     
     // autocomplete
     
@@ -201,10 +213,10 @@
 - (void)placeTableViewToCard {
     [cardLike addSubview:tableView];
     
-    [tableView.topAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor constant:10].active = YES;
-    [tableView.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor constant:15].active = YES;
-    [tableView.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
-    [tableView.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
+    [tableView.topAnchor constraintEqualToAnchor:cardLikeContent.topAnchor].active = YES;
+    [tableView.leftAnchor constraintEqualToAnchor:cardLikeContent.leftAnchor constant:15].active = YES;
+    [tableView.rightAnchor constraintEqualToAnchor:cardLikeContent.rightAnchor].active = YES;
+    [tableView.bottomAnchor constraintEqualToAnchor:cardLikeContent.bottomAnchor].active = YES;
 }
 
 
@@ -270,16 +282,12 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor colorNamed:@"autocompleteColor"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = [words objectAtIndex:indexPath.row];
-    cell.textLabel.textColor = [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:1.0];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
-}
-
-- (void)renderWordMeaning {
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -296,7 +304,7 @@
     [meaningTitle.centerYAnchor constraintEqualToAnchor:searchBar.centerYAnchor].active = YES;
     [meaningTitle.centerXAnchor constraintEqualToAnchor:searchBarContainer.centerXAnchor].active = YES;
     
-    [meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+    [meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0))];
     
     meaningTitle.layer.opacity = 0.0;
     
@@ -316,14 +324,33 @@
     [backButton.widthAnchor constraintEqualToConstant:20].active = YES;
     [backButton.heightAnchor constraintEqualToConstant:20].active = YES;
     
+    // content
+    meaningVC = [[MeaningViewController alloc] initWithWord:@"appeal"];
+    [self addChildViewController:meaningVC];
+    meaningVC.view.frame = cardLikeContent.layoutFrame;
+    meaningVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addSubview:meaningVC.view];
+    
+    [meaningVC.view.topAnchor constraintEqualToAnchor:cardLikeContent.topAnchor].active = YES;
+    [meaningVC.view.leftAnchor constraintEqualToAnchor:cardLikeContent.leftAnchor].active = YES;
+    [meaningVC.view.rightAnchor constraintEqualToAnchor:cardLikeContent.rightAnchor].active = YES;
+    [meaningVC.view.bottomAnchor constraintEqualToAnchor:cardLikeContent.bottomAnchor].active = YES;
+    
+    [meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->cardLike.bounds.size.width), 0))];
+    
+    [meaningVC didMoveToParentViewController:self];
+    
+    // move things
     [UIView animateWithDuration:0.3 animations:^{
-        [self->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation(-1 * (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+        [self->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->searchBarContainer.bounds.size.width), 0))];
         self->searchBar.layer.opacity = 0.0;
         [self->meaningTitle setTransform:CGAffineTransformIdentity];
         self->meaningTitle.layer.opacity = 1.0;
         self->backButton.layer.opacity = 1.0;
-        [self->tableView setTransform:CGAffineTransformMakeTranslation(-1 * (self->cardLike.bounds.size.width), 0)];
-        self->tableView.layer.opacity = 0.0;
+        [self->tableView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->cardLikeContent.layoutFrame.size.width), 0))];
+        //[self->tableView setTransform:CGAffineTransformMakeTranslation(-1 * (self->cardLike.bounds.size.width), 0)];
+        [self->meaningVC.view setTransform:CGAffineTransformIdentity];
     }];
 }
 
@@ -331,14 +358,17 @@
     [UIView animateWithDuration:0.3 animations:^{
         [self->searchBar setTransform:CGAffineTransformIdentity];
         self->searchBar.layer.opacity = 1.0;
-        [self->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0), CGAffineTransformMakeScale(0.9, 0.9))];
+        [self->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0))];
         self->meaningTitle.layer.opacity = 0.0;
         self->backButton.layer.opacity = 0.0;
         [self->tableView setTransform:CGAffineTransformIdentity];
-        self->tableView.layer.opacity = 1.0;
+        [self->meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->cardLike.bounds.size.width), 0))];
     } completion:^(BOOL finished) {
         [self->meaningTitle removeFromSuperview];
         [self->backButton removeFromSuperview];
+        [self->meaningVC willMoveToParentViewController:nil];
+        [self->meaningVC.view removeFromSuperview];
+        [self->meaningVC removeFromParentViewController];
     }];
 }
 
