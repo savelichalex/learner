@@ -514,12 +514,16 @@
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
         [self->meaningTitle removeFromSuperview];
         [self->backButton removeFromSuperview];
-        [self->meaningVC willMoveToParentViewController:nil];
-        [self->meaningVC.view removeFromSuperview];
-        [self->meaningVC removeFromParentViewController];
         if (self.rightHeaderView != nil) {
             self.rightHeaderView = nil;
         }
+        
+        [self->meaningVC willMoveToParentViewController:nil];
+        [self->meaningVC.view removeFromSuperview];
+        [self->meaningVC removeFromParentViewController];
+        
+        [self->tableView removeFromSuperview];
+        
         self->state = CardViewStateClosed;
     }];
     
