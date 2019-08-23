@@ -11,15 +11,17 @@
 @implementation ChoosableDef {
     UITapGestureRecognizer *singleTapRecognizer;
     UIView *backView;
+    void(^_onTap)(BOOL);
 }
 
-- (instancetype)initWithEntryItem:(EntryItem *)item formType:(NSString *)type headword:(nonnull NSString *)headword {
+- (instancetype)initWithEntryItem:(EntryItem *)item formType:(NSString *)type headword:(nonnull NSString *)headword onTap:(void(^)(BOOL isActive))onTap {
     self = [super init];
     if (self) {
         _item = item;
         _type = type;
         _headword = headword;
         _isActive = NO;
+        _onTap = onTap;
         singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:singleTapRecognizer];
         self.userInteractionEnabled = YES;
@@ -61,9 +63,10 @@
     if (_isActive) {
         backView.backgroundColor = [UIColor clearColor];
     } else {
-        backView.backgroundColor = [UIColor colorWithRed:1.00 green:0.99 blue:0.78 alpha:1.0];
+        backView.backgroundColor = [UIColor colorNamed:@"highlighter"];
     }
     _isActive = !_isActive;
+    _onTap(_isActive);
 }
 
 /*

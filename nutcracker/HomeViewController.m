@@ -27,11 +27,11 @@
     UIView *cardLikePullBar;
     UILayoutGuide *cardLikeContent;
     
+    CardViewState state;
     // search
     UITextChecker *textChecker;
     NSMutableArray *words;
     UITableView *tableView;
-    BOOL isSearching;
     CGFloat activeInSearchCardY;
     
     // new word
@@ -42,7 +42,6 @@
     // learn
     UIViewPropertyAnimator *animator;
     UIPanGestureRecognizer *recognizer;
-    BOOL isOpened;
     
     CGFloat inactiveCardY;
     CGFloat activeCardY;
@@ -61,7 +60,7 @@
         
         animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.3 curve:UIViewAnimationCurveEaseInOut animations:nil];
         recognizer = [[UIPanGestureRecognizer alloc] init];
-        isOpened = NO;
+        state = CardViewStateClosed;
     }
     return self;
 }
@@ -95,6 +94,7 @@
     searchBar.spellCheckingType = UITextSpellCheckingTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    searchBar.placeholder = @"Type to add new word";
     
     UITextField *searchField = [searchBar valueForKey:@"searchField"];
     searchField.backgroundColor = [UIColor colorNamed:@"card"];
@@ -173,14 +173,6 @@
     
     // autocomplete
     
-    tableView = [[UITableView alloc] init];
-    tableView.backgroundColor = [UIColor clearColor];
-    tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 15);
-    
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    
     // card content
     
 //    [[Cards sharedInstance] addMWCards:@[@{
@@ -211,6 +203,14 @@
 }
 
 - (void)placeTableViewToCard {
+    tableView = [[UITableView alloc] init];
+    tableView.backgroundColor = [UIColor clearColor];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    tableView.contentInset = UIEdgeInsetsMake(0, -15, 0, 15);
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    
     [cardLike addSubview:tableView];
     
     [tableView.topAnchor constraintEqualToAnchor:cardLikeContent.topAnchor].active = YES;
@@ -219,39 +219,19 @@
     [tableView.bottomAnchor constraintEqualToAnchor:cardLikeContent.bottomAnchor].active = YES;
 }
 
+// MARK:- Search bar delegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [self placeTableViewToCard];
     tableView.layer.opacity = 0.0;
-    isSearching = YES;
-    [UIView animateWithDuration:0.25 animations:^{
-        self->searchBarYInactive.active = NO;
-        self->searchBarYActive.active = YES;
-        self->cardLikeTopInactive.active = NO;
-        self->cardLikeTopSearchActive.active = YES;
-        self->cardLikeTopLearnActive.active = NO;
-        self->tableView.layer.opacity = 1.0;
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        self->activeInSearchCardY = self->cardLike.frame.origin.y;
-    }];
+    
+    [self openOnSearch];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     
-    [UIView animateWithDuration:0.25 animations:^{
-        self->searchBarYInactive.active = YES;
-        self->searchBarYActive.active = NO;
-        self->cardLikeTopInactive.active = YES;
-        self->cardLikeTopSearchActive.active = NO;
-        self->cardLikeTopLearnActive.active = NO;
-        self->tableView.layer.opacity = 0.0;
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        [self->tableView removeFromSuperview];
-        self->isSearching = NO;
-    }];
+    [self closeOnSearch];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -271,6 +251,8 @@
     
     [tableView reloadData];
 }
+
+// MARK:- Table view delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [words count];
@@ -351,10 +333,37 @@
         [self->tableView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->cardLikeContent.layoutFrame.size.width), 0))];
         //[self->tableView setTransform:CGAffineTransformMakeTranslation(-1 * (self->cardLike.bounds.size.width), 0)];
         [self->meaningVC.view setTransform:CGAffineTransformIdentity];
+        self->state = CardViewStateMeaning;
     }];
 }
 
+// MARK:- Setters
+
+- (void)setRightHeaderView:(nullable UIView *)rightHeaderView {
+    if (rightHeaderView == nil) {
+        [_rightHeaderView removeFromSuperview];
+        _rightHeaderView = nil;
+        
+        return;
+    }
+    _rightHeaderView = rightHeaderView;
+    
+    [searchBarContainer addSubview:_rightHeaderView];
+    
+    [_rightHeaderView.rightAnchor constraintEqualToAnchor:searchBar.rightAnchor].active = YES;
+    [_rightHeaderView.centerYAnchor constraintEqualToAnchor:searchBar.centerYAnchor].active = YES;
+    [_rightHeaderView.widthAnchor constraintEqualToConstant:20].active = YES;
+    [_rightHeaderView.heightAnchor constraintEqualToConstant:20].active = YES;
+}
+
+// MARK:- Transitions
+
 - (void)goBackToSearch {
+    if (self.rightHeaderView != nil) {
+        [UIView animateWithDuration:0.1 animations:^{
+            self.rightHeaderView.layer.opacity = 0.0;
+        }];
+    }
     [UIView animateWithDuration:0.3 animations:^{
         [self->searchBar setTransform:CGAffineTransformIdentity];
         self->searchBar.layer.opacity = 1.0;
@@ -369,40 +378,66 @@
         [self->meaningVC willMoveToParentViewController:nil];
         [self->meaningVC.view removeFromSuperview];
         [self->meaningVC removeFromParentViewController];
+        if (self.rightHeaderView != nil) {
+            self.rightHeaderView = nil;
+        }
+        self->state = CardViewStateSearching;
     }];
 }
 
-- (void)openCard {
+- (void)openOnLearning {
     [animator addAnimations:^{
         self->searchBarYInactive.active = NO;
         self->searchBarYActive.active = YES;
         self->searchBar.layer.opacity = 0.0;
+        
         self->cardLikeTopInactive.active = NO;
-        self->cardLikeTopSearchActive.active = NO;
         self->cardLikeTopLearnActive.active = YES;
+        
         [self.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->isOpened = YES;
+        self->state = CardViewStateLearning;
     }];
     
     [animator startAnimation];
 }
 
-- (void)closeCard {
+- (void)closeOnLearning {
     [animator addAnimations:^{
-        self->searchBarYInactive.active = YES;
         self->searchBarYActive.active = NO;
+        self->searchBarYInactive.active = YES;
         self->searchBar.layer.opacity = 1.0;
-        self->cardLikeTopInactive.active = YES;
-        self->cardLikeTopSearchActive.active = NO;
+        
         self->cardLikeTopLearnActive.active = NO;
+        self->cardLikeTopInactive.active = YES;
+        
         [self.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->isOpened = NO;
+        self->state = CardViewStateClosed;
+    }];
+    
+    [animator startAnimation];
+}
+
+- (void)openOnSearch {
+    [animator addAnimations:^{
+        self->searchBarYInactive.active = NO;
+        self->searchBarYActive.active = YES;
+        
+        self->cardLikeTopInactive.active = NO;
+        self->cardLikeTopSearchActive.active = YES;
+        
+        self->tableView.layer.opacity = 1.0;
+        [self.view layoutIfNeeded];
+    }];
+    
+    [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
+        self->activeInSearchCardY = self->cardLike.frame.origin.y;
+        self->state = CardViewStateSearching;
     }];
     
     [animator startAnimation];
@@ -410,32 +445,110 @@
 
 - (void)closeOnSearch {
     [animator addAnimations:^{
-        self->searchBarYInactive.active = YES;
         self->searchBarYActive.active = NO;
-        self->cardLikeTopInactive.active = YES;
+        self->searchBarYInactive.active = YES;
+        
         self->cardLikeTopSearchActive.active = NO;
-        self->cardLikeTopLearnActive.active = NO;
+        self->cardLikeTopInactive.active = YES;
+        
         self->tableView.layer.opacity = 0.0;
         [self.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
+        //[self->searchBar resignFirstResponder];
         [self->tableView removeFromSuperview];
-        self->isSearching = NO;
+        self->state = CardViewStateClosed;
     }];
     
     [animator startAnimation];
 }
 
+- (void)openOnMeaning {
+    [animator addAnimations:^{
+        self->searchBarYInactive.active = NO;
+        self->searchBarYActive.active = YES;
+        [self->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->searchBarContainer.bounds.size.width), 0))];
+        self->searchBar.layer.opacity = 0.0;
+        [self->meaningTitle setTransform:CGAffineTransformIdentity];
+        self->meaningTitle.layer.opacity = 1.0;
+        self->backButton.layer.opacity = 1.0;
+        if (self.rightHeaderView) {
+            self.rightHeaderView.layer.opacity = 1.0;
+        }
+        
+        self->cardLikeTopInactive.active = NO;
+        self->cardLikeTopSearchActive.active = YES;
+        
+        self->meaningVC.view.layer.opacity = 1.0;
+        [self.view layoutIfNeeded];
+    }];
+    
+    [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
+        self->state = CardViewStateMeaning;
+    }];
+    
+    [animator startAnimation];
+}
+
+- (void)closeOnMeaning {
+    [animator addAnimations:^{
+        self->searchBarYActive.active = NO;
+        self->searchBarYInactive.active = YES;
+        [self->searchBar setTransform:CGAffineTransformIdentity];
+        self->searchBar.layer.opacity = 1.0;
+        [self->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0))];
+        self->meaningTitle.layer.opacity = 0.0;
+        self->backButton.layer.opacity = 0.0;
+        if (self.rightHeaderView) {
+            self.rightHeaderView.layer.opacity = 0.0;
+        }
+        
+        self->cardLikeTopSearchActive.active = NO;
+        self->cardLikeTopInactive.active = YES;
+        
+        self->meaningVC.view.layer.opacity = 0.0;
+        [self.view layoutIfNeeded];
+    }];
+    
+    [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
+        [self->meaningTitle removeFromSuperview];
+        [self->backButton removeFromSuperview];
+        [self->meaningVC willMoveToParentViewController:nil];
+        [self->meaningVC.view removeFromSuperview];
+        [self->meaningVC removeFromParentViewController];
+        if (self.rightHeaderView != nil) {
+            self.rightHeaderView = nil;
+        }
+        self->state = CardViewStateClosed;
+    }];
+    
+    [animator startAnimation];
+}
+
+- (void)closeCard {
+    if (state == CardViewStateMeaning) {
+        searchBar.searchTextField.text = @"";
+        [self closeOnMeaning];
+    } else if (state == CardViewStateSearching) {
+        [self closeOnSearch];
+    } else if (state == CardViewStateLearning) {
+        [self closeOnLearning];
+    } else {
+        [self openOnLearning];
+    }
+}
+
 - (void)pullerPanned:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        if (isSearching) {
-            [searchBar resignFirstResponder];
+        if (state == CardViewStateMeaning) {
+            [self closeOnMeaning];
+        } else if (state == CardViewStateSearching) {
             [self closeOnSearch];
-        } else if (!isOpened) {
-            [self openCard];
+        } else if (state == CardViewStateLearning) {
+            [self closeOnLearning];
         } else {
-            [self closeCard];
+            [self openOnLearning];
         }
         [animator pauseAnimation];
         return;
@@ -444,13 +557,12 @@
         CGPoint translation = [recognizer translationInView:self.view];
         CGFloat factor;
         
-        if (isSearching) {
+        if (state == CardViewStateSearching || state == CardViewStateMeaning) {
             factor = translation.y / (inactiveCardY - activeInSearchCardY);
-        } else {
+        } else if (state == CardViewStateLearning) {
             factor = translation.y / (inactiveCardY - activeCardY);
-            if (!isOpened) {
-                factor = factor * -1;
-            }
+        } else {
+            factor = -1 * translation.y / (inactiveCardY - activeCardY);
         }
         
         animator.fractionComplete = factor;
@@ -459,23 +571,43 @@
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint translation = [recognizer translationInView:self.view];
         CGPoint velocity = [recognizer velocityInView:self.view];
-        if (isSearching) {
-            //CGFloat factor = translation.y / (inactiveCardY - activeInSearchCardY);
-            [animator continueAnimationWithTimingParameters:nil durationFactor:0];
-        } else {
-            CGFloat factor = translation.y / (inactiveCardY - activeCardY);
+        CGFloat factor;
+        
+        if (state == CardViewStateMeaning) {
+            factor = -1 * translation.y / (inactiveCardY - activeInSearchCardY);
+            if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
+                [animator continueAnimationWithTimingParameters:nil durationFactor:0];
+                searchBar.searchTextField.text = @"";
+            } else {
+                [animator stopAnimation:YES];
+                [self openOnMeaning];
+            }
+        } else if (state == CardViewStateSearching) {
+            factor = -1 * translation.y / (inactiveCardY - activeInSearchCardY);
+            if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
+                [animator continueAnimationWithTimingParameters:nil durationFactor:0];
+                [self->searchBar resignFirstResponder];
+            } else {
+                [animator stopAnimation:YES];
+                [self openOnSearch];
+            }
+        } else if (state == CardViewStateLearning) {
+            factor = translation.y / (inactiveCardY - activeCardY);
             if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
                 [animator continueAnimationWithTimingParameters:nil durationFactor:0];
             } else {
                 [animator stopAnimation:YES];
-                if (isOpened) {
-                    [self openCard];
-                } else {
-                    [self closeCard];
-                }
+                [self openOnLearning];
+            }
+        } else {
+            factor = -1 * translation.y / (inactiveCardY - activeCardY);
+            if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
+                [animator continueAnimationWithTimingParameters:nil durationFactor:0];
+            } else {
+                [animator stopAnimation:YES];
+                [self closeOnLearning];
             }
         }
-        //
         return;
     }
 }

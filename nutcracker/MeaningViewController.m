@@ -10,7 +10,8 @@
 #import "DictionaryApiParser.h"
 #import "ChoosableDef.h"
 #import "Cards.h"
-#import "UpcomingPickingViewController.h"
+#import "HomeViewController.h"
+#import "IconUtils.h"
 
 @interface MeaningViewController ()
 
@@ -19,6 +20,7 @@
 @implementation MeaningViewController {
     NSMutableArray *choosableDefs;
     NSString *_word;
+    int _choosedCount;
 }
 
 - (instancetype)initWithWord:(NSString *)word {
@@ -26,6 +28,7 @@
     if (self) {
         choosableDefs = [[NSMutableArray alloc] init];
         _word = word;
+        _choosedCount = 0;
         
         NSString *jsonPath = [[NSBundle mainBundle] pathForResource:word ofType:@"json"];
         NSData *json = [NSData dataWithContentsOfFile:jsonPath];
@@ -125,13 +128,17 @@
                     [defsStackView setSpacing:20];
                     for (id section in form.defs) {
                         if ([section isKindOfClass:[EntryItem class]]) {
-                            ChoosableDef *def = [[ChoosableDef alloc] initWithEntryItem:section formType:form.name headword:form.headword];
+                            ChoosableDef *def = [[ChoosableDef alloc] initWithEntryItem:section formType:form.name headword:form.headword onTap:^(BOOL isActive) {
+                                [self onChooseTap:isActive];
+                            }];
                             [self->choosableDefs addObject:def];
                             [defsStackView addArrangedSubview:def];
                         }
                         if ([section isKindOfClass:[NSArray class]]) {
                             for (EntryItem *entry in section) {
-                                ChoosableDef *def = [[ChoosableDef alloc] initWithEntryItem:entry formType:form.name headword:form.headword];
+                                ChoosableDef *def = [[ChoosableDef alloc] initWithEntryItem:entry formType:form.name headword:form.headword onTap:^(BOOL isActive) {
+                                    [self onChooseTap:isActive];
+                                }];
                                 [self->choosableDefs addObject:def];
                                 [defsStackView addArrangedSubview:def];
                             }
@@ -157,8 +164,51 @@
     return self;
 }
 
+- (void)onChooseTap:(BOOL)isActive {
+    if (isActive) {
+        [self onChoose];
+    } else {
+        [self onUnchoose];
+    }
+}
+
+- (void)onChoose {
+    if (_choosedCount == 0) {
+        HomeViewController* parent = (HomeViewController *)self.parentViewController;
+        
+        UIImage *closeImage = [IconUtils imageForPlusIcon];
+        
+        UIButton *close = [[UIButton alloc] init];
+        close.translatesAutoresizingMaskIntoConstraints = NO;
+        [close setImage:[closeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        [close.imageView setTintColor:[UIColor whiteColor]];
+        [close addTarget:self action:@selector(onAdd) forControlEvents:UIControlEventTouchUpInside];
+        close.layer.opacity = 0.0;
+        [close setTransform:CGAffineTransformMakeScale(0.5, 0.5)];
+        
+        parent.rightHeaderView = close;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            close.layer.opacity = 1.0;
+            [close setTransform:CGAffineTransformMakeScale(1.2, 1.2)];
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.2 animations:^{
+                [close setTransform:CGAffineTransformIdentity];
+            }];
+        }];
+    }
+    _choosedCount += 1;
+}
+
+- (void)onUnchoose {
+    _choosedCount -= 1;
+    if (_choosedCount == 0) {
+        HomeViewController* parent = (HomeViewController *)self.parentViewController;
+        parent.rightHeaderView = nil;
+    }
+}
+
 - (void)onAdd {
-    // TODO: create Card
     NSMutableArray *entries = [[NSMutableArray alloc] init];
     for (ChoosableDef* item in choosableDefs) {
         if (item.isActive) {
@@ -169,12 +219,10 @@
                                  @"examples": item.item.examples}];
         }
     }
-    if ([entries count] > 0) {
-        [[Cards sharedInstance] addMWCards:entries];
-     
-        UpcomingPickingViewController *vc = [[UpcomingPickingViewController alloc] init];
-        [self presentViewController:vc animated:YES completion:nil];
-    }
+    [[Cards sharedInstance] addMWCards:entries];
+    
+    HomeViewController* parent = (HomeViewController *)self.parentViewController;
+    [parent closeCard];
 }
 
 - (void)renderMeaning:(NSString *)meaning {

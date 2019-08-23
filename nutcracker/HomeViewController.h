@@ -10,7 +10,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, CardViewState) {
+    CardViewStateClosed,
+    CardViewStateLearning,
+    CardViewStateSearching,
+    CardViewStateMeaning,
+};
+
 @interface HomeViewController : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic, nullable) UIView *rightHeaderView;
+
+- (void)closeCard;
 
 @end
 
