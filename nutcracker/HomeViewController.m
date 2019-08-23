@@ -529,6 +529,7 @@
 - (void)closeCard {
     if (state == CardViewStateMeaning) {
         searchBar.searchTextField.text = @"";
+        [words removeAllObjects];
         [self closeOnMeaning];
     } else if (state == CardViewStateSearching) {
         [self closeOnSearch];
@@ -578,6 +579,7 @@
             if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
                 [animator continueAnimationWithTimingParameters:nil durationFactor:0];
                 searchBar.searchTextField.text = @"";
+                [words removeAllObjects];
             } else {
                 [animator stopAnimation:YES];
                 [self openOnMeaning];
