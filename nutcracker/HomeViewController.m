@@ -217,14 +217,17 @@
     
     UILabel *homeTabView = [[UILabel alloc] init];
     homeTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    homeTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
     homeTabView.text = @"Home";
     homeTabView.textAlignment = NSTextAlignmentCenter;
     UILabel *wordsTabView = [[UILabel alloc] init];
     wordsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    wordsTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
     wordsTabView.text = @"Words";
     wordsTabView.textAlignment = NSTextAlignmentCenter;
     UILabel *statsTabView = [[UILabel alloc] init];
     statsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+    statsTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
     statsTabView.text = @"Stats";
     statsTabView.textAlignment = NSTextAlignmentCenter;
     
@@ -234,12 +237,20 @@
     [tabsRow setAlignment:UIStackViewAlignmentFirstBaseline];
     [tabsRow setDistribution:UIStackViewDistributionFillProportionally];
     
-    [tabBar addSubview:tabsRow];
+    UIView *tabsRowWrapper = [[UIView alloc] init];
+    tabsRowWrapper.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [tabsRow.topAnchor constraintEqualToAnchor:tabBar.topAnchor constant:20].active = YES;
-    [tabsRow.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor].active = YES;
-    [tabsRow.leftAnchor constraintEqualToAnchor:tabBar.leftAnchor constant:20].active = YES;
-    [tabsRow.rightAnchor constraintEqualToAnchor:tabBar.rightAnchor constant:-20].active = YES;
+    [tabBar addSubview:tabsRowWrapper];
+    [tabsRowWrapper addSubview:tabsRow];
+    
+    [tabsRowWrapper.topAnchor constraintEqualToAnchor:tabBar.topAnchor constant:20].active = YES;
+    [tabsRowWrapper.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-15].active = YES;
+    [tabsRowWrapper.leftAnchor constraintEqualToAnchor:tabBar.leftAnchor constant:20].active = YES;
+    [tabsRowWrapper.rightAnchor constraintEqualToAnchor:tabBar.rightAnchor constant:-20].active = YES;
+    [tabsRow.topAnchor constraintEqualToAnchor:tabsRowWrapper.topAnchor].active = YES;
+    [tabsRow.bottomAnchor constraintEqualToAnchor:tabsRowWrapper.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
+    [tabsRow.leftAnchor constraintEqualToAnchor:tabsRowWrapper.leftAnchor].active = YES;
+    [tabsRow.rightAnchor constraintEqualToAnchor:tabsRowWrapper.rightAnchor].active = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
