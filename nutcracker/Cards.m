@@ -51,5 +51,19 @@ static NSString *cardType = @"MWCard";
     }
 }
 
+- (MWCard *)getUpcomingCard {
+    if (_upcoming.count == 0) {
+        return nil;
+    }
+    return _upcoming[0];
+}
+
+- (MWCard *)getNextToUpcomingCard {
+    if (_upcoming.count < 2) {
+        return nil;
+    }
+    return _upcoming[1];
+}
+
 
 @end

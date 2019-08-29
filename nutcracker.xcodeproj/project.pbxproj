@@ -26,6 +26,8 @@
 		A60219CF22C113B10082ACE3 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A60219CE22C113B10082ACE3 /* libxml2.tbd */; };
 		A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A641C182230DA8D3002A5974 /* HomeViewController.m */; };
 		A6F524472310490C0041D747 /* IconUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F524462310490C0041D747 /* IconUtils.m */; };
+		A6F5244A231129B90041D747 /* UpcomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F52449231129B90041D747 /* UpcomingViewController.m */; };
+		A6F5244D2311362E0041D747 /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F5244C2311362E0041D747 /* CardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,10 @@
 		A641C182230DA8D3002A5974 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		A6F524452310490C0041D747 /* IconUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IconUtils.h; sourceTree = "<group>"; };
 		A6F524462310490C0041D747 /* IconUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IconUtils.m; sourceTree = "<group>"; };
+		A6F52448231129B80041D747 /* UpcomingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpcomingViewController.h; sourceTree = "<group>"; };
+		A6F52449231129B90041D747 /* UpcomingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpcomingViewController.m; sourceTree = "<group>"; };
+		A6F5244B2311362E0041D747 /* CardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
+		A6F5244C2311362E0041D747 /* CardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,10 @@
 				A641C182230DA8D3002A5974 /* HomeViewController.m */,
 				A6F524452310490C0041D747 /* IconUtils.h */,
 				A6F524462310490C0041D747 /* IconUtils.m */,
+				A6F52448231129B80041D747 /* UpcomingViewController.h */,
+				A6F52449231129B90041D747 /* UpcomingViewController.m */,
+				A6F5244B2311362E0041D747 /* CardView.h */,
+				A6F5244C2311362E0041D747 /* CardView.m */,
 			);
 			path = nutcracker;
 			sourceTree = "<group>";
@@ -212,11 +222,13 @@
 				84AF18612233ECAF0026DEB3 /* Cards.m in Sources */,
 				84AF1867223520E60026DEB3 /* MWCardView.m in Sources */,
 				84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */,
+				A6F5244A231129B90041D747 /* UpcomingViewController.m in Sources */,
 				84AF1864223410650026DEB3 /* UpcomingPickingViewController.m in Sources */,
 				84F07608222C134200E8008C /* MeaningViewController.m in Sources */,
 				84B966E1222563A9002C3A08 /* ViewController.m in Sources */,
 				84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */,
 				84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */,
+				A6F5244D2311362E0041D747 /* CardView.m in Sources */,
 				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
 				A60219CC22C0D1EA0082ACE3 /* download.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,

@@ -10,6 +10,8 @@
 #import "MWCardView.h"
 #import "Cards.h"
 #import "MeaningViewController.h"
+#import "UpcomingViewController.h"
+#import "CardView.h"
 
 @interface HomeViewController ()
 
@@ -20,14 +22,12 @@
     UISearchBar *searchBar;
     NSLayoutConstraint *searchBarYInactive;
     NSLayoutConstraint *searchBarYActive;
-    UIView *cardLike;
-    NSLayoutConstraint *cardLikeTopInactive;
-    NSLayoutConstraint *cardLikeTopSearchActive;
-    NSLayoutConstraint *cardLikeTopLearnActive;
-    UIView *cardLikePullBar;
-    UILayoutGuide *cardLikeContent;
     
     CardViewState state;
+    
+    CardView *activeCard;
+    CardView *backCard;
+    
     // search
     UITextChecker *textChecker;
     NSMutableArray *words;
@@ -42,6 +42,7 @@
     // learn
     UIViewPropertyAnimator *animator;
     UIPanGestureRecognizer *recognizer;
+    UpcomingViewController *learningVC;
     
     CGFloat inactiveCardY;
     CGFloat activeCardY;
@@ -119,71 +120,55 @@
     [searchBar.rightAnchor constraintEqualToAnchor:searchBarContainer.rightAnchor constant:-20].active = YES;
     
     // second half
-    cardLike = [[UIView alloc] init];
+        [[Cards sharedInstance] addMWCards:@[@{
+                                                 @"word": @"allow",
+                                                 @"form": @"noun",
+                                                 @"headword": @"some headword",
+                                                 @"meaning": @"this is when you agree that someone will do smth"
+                                                 }]];
     
-    cardLike.backgroundColor = [UIColor colorNamed:@"card"];
-    [cardLike.layer setCornerRadius:20];
-    [cardLike.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [cardLike.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
-    [cardLike.layer setShadowRadius:4.0];
-    [cardLike.layer setShadowOpacity:0.1];
-    cardLike.translatesAutoresizingMaskIntoConstraints = NO;
+    activeCard = [[CardView alloc] init];
     
-    [self.view addSubview:cardLike];
+    [self.view addSubview:activeCard];
     
-    cardLikeTopInactive = [cardLike.topAnchor constraintEqualToAnchor:searchBarContainer.bottomAnchor];
-    cardLikeTopSearchActive = [cardLike.topAnchor constraintEqualToAnchor:self->searchBar.bottomAnchor constant:10];
-    cardLikeTopLearnActive = [cardLike.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10];
+    activeCard.closedConstraint = [activeCard.topAnchor constraintEqualToAnchor:searchBarContainer.bottomAnchor];
+    activeCard.searchingConstraint = [activeCard.topAnchor constraintEqualToAnchor:self->searchBar.bottomAnchor constant:10];
+    activeCard.learningConstraint = [activeCard.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10];
     
-    cardLikeTopInactive.active = YES;
+    activeCard.closedConstraint.active = YES;
     
-    [cardLike.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
-    [cardLike.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    [cardLike.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:20].active = YES;
+    [activeCard.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [activeCard.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [activeCard.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     
-    // card pull bar
-    UIView *cardLikePullBarInner = [[UIView alloc] init];
-    cardLikePullBarInner.translatesAutoresizingMaskIntoConstraints = NO;
-    cardLikePullBarInner.backgroundColor = [UIColor colorNamed:@"puller"];
-    [cardLikePullBarInner.layer setCornerRadius:3];
+    [activeCard addGestureRecognizer:recognizer];
+
+    backCard = [[CardView alloc] init];
+    backCard.backgroundColor = [UIColor colorNamed:@"backCard"];
     
-    cardLikePullBar = [[UIView alloc] init];
-    cardLikePullBar.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view insertSubview:backCard belowSubview:activeCard];
     
-    [cardLike addSubview:cardLikePullBar];
-    [cardLikePullBar addSubview:cardLikePullBarInner];
+    backCard.closedConstraint = [backCard.topAnchor constraintEqualToAnchor:searchBarContainer.bottomAnchor];
+    backCard.searchingConstraint = [backCard.topAnchor constraintEqualToAnchor:self->searchBar.bottomAnchor constant:10];
+    backCard.learningConstraint = [backCard.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10];
     
-    [cardLikePullBarInner.widthAnchor constraintEqualToConstant:40].active = YES;
-    [cardLikePullBarInner.heightAnchor constraintEqualToConstant:6].active = YES;
-    [cardLikePullBarInner.centerXAnchor constraintEqualToAnchor:cardLikePullBar.centerXAnchor].active = YES;
-    [cardLikePullBarInner.topAnchor constraintEqualToAnchor:cardLikePullBar.topAnchor constant:10].active = YES;
-    [cardLikePullBarInner.bottomAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor constant:-10].active = YES;
+    backCard.closedConstraint.active = YES;
     
-    [cardLikePullBar.topAnchor constraintEqualToAnchor:cardLike.topAnchor].active = YES;
-    [cardLikePullBar.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor].active = YES;
-    [cardLikePullBar.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
+    [backCard.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [backCard.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [backCard.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     
-    [cardLikePullBar addGestureRecognizer:recognizer];
+    [backCard setNeedsLayout];
+    [backCard layoutIfNeeded];
     
-    cardLikeContent = [[UILayoutGuide alloc] init];
-    
-    [cardLike addLayoutGuide:cardLikeContent];
-    
-    [cardLikeContent.topAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor constant:10].active = YES;
-    [cardLikeContent.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor].active = YES;
-    [cardLikeContent.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
-    [cardLikeContent.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
+    // 0.075 == 1 - 0.85 / 2
+    [backCard setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.85, 0.85), CGAffineTransformMakeTranslation(0, -(backCard.bounds.size.height * 0.075 + 7)))];
     
     // autocomplete
     
     // card content
     
-//    [[Cards sharedInstance] addMWCards:@[@{
-//                                             @"word": @"allow",
-//                                             @"form": @"noun",
-//                                             @"headword": @"some headword",
-//                                             @"meaning": @"this is when you agree that someone will do smth"
-//                                             }]];
+
 //
 //    MWCardView *content = [[MWCardView alloc] initWithCardData:[[Cards sharedInstance] upcoming][0]];
 //    content.translatesAutoresizingMaskIntoConstraints = NO;
@@ -199,50 +184,55 @@
     
     // tab bar
     tabBar = [[UIView alloc] init];
-    
+
     tabBar.backgroundColor = [UIColor colorNamed:@"tabBar"];
     [tabBar.layer setCornerRadius:20];
     tabBar.layer.maskedCorners = kCALayerMaxXMinYCorner|kCALayerMinXMinYCorner;
     [tabBar.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
     [tabBar.layer setShadowOffset:CGSizeMake(0.0, -2.0)];
     [tabBar.layer setShadowRadius:10.0];
-    [tabBar.layer setShadowOpacity:0.05];
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleLight) {
+        [tabBar.layer setShadowOpacity:0.05];
+    } else {
+        [tabBar.layer setShadowOpacity:0.0];
+    }
+    
     tabBar.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     [self.view addSubview:tabBar];
-    
+
     [tabBar.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     [tabBar.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [tabBar.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    
+
     UILabel *homeTabView = [[UILabel alloc] init];
     homeTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
-    homeTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
+    homeTabView.textColor = [UIColor colorNamed:@"secondaryLabel"];
     homeTabView.text = @"Home";
     homeTabView.textAlignment = NSTextAlignmentCenter;
     UILabel *wordsTabView = [[UILabel alloc] init];
     wordsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
-    wordsTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
+    wordsTabView.textColor = [UIColor colorNamed:@"secondaryLabel"];
     wordsTabView.text = @"Words";
     wordsTabView.textAlignment = NSTextAlignmentCenter;
     UILabel *statsTabView = [[UILabel alloc] init];
     statsTabView.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
-    statsTabView.textColor = [UIColor colorNamed:@"tabBarTitle"];
+    statsTabView.textColor = [UIColor colorNamed:@"secondaryLabel"];
     statsTabView.text = @"Stats";
     statsTabView.textAlignment = NSTextAlignmentCenter;
-    
+
     UIStackView *tabsRow = [[UIStackView alloc] initWithArrangedSubviews:@[homeTabView, wordsTabView, statsTabView]];
     tabsRow.translatesAutoresizingMaskIntoConstraints = NO;
     [tabsRow setAxis:UILayoutConstraintAxisHorizontal];
     [tabsRow setAlignment:UIStackViewAlignmentFirstBaseline];
     [tabsRow setDistribution:UIStackViewDistributionFillProportionally];
-    
+
     UIView *tabsRowWrapper = [[UIView alloc] init];
     tabsRowWrapper.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     [tabBar addSubview:tabsRowWrapper];
     [tabsRowWrapper addSubview:tabsRow];
-    
+
     [tabsRowWrapper.topAnchor constraintEqualToAnchor:tabBar.topAnchor constant:20].active = YES;
     [tabsRowWrapper.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-15].active = YES;
     [tabsRowWrapper.leftAnchor constraintEqualToAnchor:tabBar.leftAnchor constant:20].active = YES;
@@ -251,12 +241,22 @@
     [tabsRow.bottomAnchor constraintEqualToAnchor:tabsRowWrapper.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
     [tabsRow.leftAnchor constraintEqualToAnchor:tabsRowWrapper.leftAnchor].active = YES;
     [tabsRow.rightAnchor constraintEqualToAnchor:tabsRowWrapper.rightAnchor].active = YES;
+    
+    [self mountLearningVC];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleLight) {
+        [tabBar.layer setShadowOpacity:0.05];
+    } else {
+        [tabBar.layer setShadowOpacity:0.0];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    inactiveCardY = cardLike.frame.origin.y;
+    inactiveCardY = activeCard.frame.origin.y;
     activeCardY = self.view.safeAreaLayoutGuide.layoutFrame.origin.y + 10;
 }
 
@@ -269,12 +269,34 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     
-    [cardLike addSubview:tableView];
+    [activeCard addSubview:tableView];
     
-    [tableView.topAnchor constraintEqualToAnchor:cardLikeContent.topAnchor].active = YES;
-    [tableView.leftAnchor constraintEqualToAnchor:cardLikeContent.leftAnchor constant:15].active = YES;
-    [tableView.rightAnchor constraintEqualToAnchor:cardLikeContent.rightAnchor].active = YES;
-    [tableView.bottomAnchor constraintEqualToAnchor:cardLikeContent.bottomAnchor].active = YES;
+    [tableView.topAnchor constraintEqualToAnchor:activeCard.content.topAnchor].active = YES;
+    [tableView.leftAnchor constraintEqualToAnchor:activeCard.content.leftAnchor constant:15].active = YES;
+    [tableView.rightAnchor constraintEqualToAnchor:activeCard.content.rightAnchor].active = YES;
+    [tableView.bottomAnchor constraintEqualToAnchor:activeCard.content.bottomAnchor].active = YES;
+}
+
+- (void)mountLearningVC {
+    learningVC = [[UpcomingViewController alloc] init];
+    [self addChildViewController:learningVC];
+    learningVC.view.frame = activeCard.content.layoutFrame;
+    learningVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [activeCard addSubview:learningVC.view];
+    
+    [learningVC.view.topAnchor constraintEqualToAnchor:activeCard.content.topAnchor].active = YES;
+    [learningVC.view.leftAnchor constraintEqualToAnchor:activeCard.content.leftAnchor].active = YES;
+    [learningVC.view.rightAnchor constraintEqualToAnchor:activeCard.content.rightAnchor].active = YES;
+    [learningVC.view.bottomAnchor constraintEqualToAnchor:activeCard.content.bottomAnchor].active = YES;
+    
+    [learningVC didMoveToParentViewController:self];
+}
+
+- (void)unmountLearningVC {
+    [self->learningVC willMoveToParentViewController:nil];
+    [self->learningVC.view removeFromSuperview];
+    [self->learningVC removeFromParentViewController];
 }
 
 // MARK:- Search bar delegate
@@ -367,17 +389,17 @@
     // content
     meaningVC = [[MeaningViewController alloc] initWithWord:@"appeal"];
     [self addChildViewController:meaningVC];
-    meaningVC.view.frame = cardLikeContent.layoutFrame;
+    meaningVC.view.frame = activeCard.content.layoutFrame;
     meaningVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self.view addSubview:meaningVC.view];
+    [activeCard addSubview:meaningVC.view];
     
-    [meaningVC.view.topAnchor constraintEqualToAnchor:cardLikeContent.topAnchor].active = YES;
-    [meaningVC.view.leftAnchor constraintEqualToAnchor:cardLikeContent.leftAnchor].active = YES;
-    [meaningVC.view.rightAnchor constraintEqualToAnchor:cardLikeContent.rightAnchor].active = YES;
-    [meaningVC.view.bottomAnchor constraintEqualToAnchor:cardLikeContent.bottomAnchor].active = YES;
+    [meaningVC.view.topAnchor constraintEqualToAnchor:activeCard.content.topAnchor].active = YES;
+    [meaningVC.view.leftAnchor constraintEqualToAnchor:activeCard.content.leftAnchor].active = YES;
+    [meaningVC.view.rightAnchor constraintEqualToAnchor:activeCard.content.rightAnchor].active = YES;
+    [meaningVC.view.bottomAnchor constraintEqualToAnchor:activeCard.content.bottomAnchor].active = YES;
     
-    [meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->cardLike.bounds.size.width), 0))];
+    [meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (activeCard.bounds.size.width), 0))];
     
     [meaningVC didMoveToParentViewController:self];
     
@@ -388,7 +410,7 @@
         [self->meaningTitle setTransform:CGAffineTransformIdentity];
         self->meaningTitle.layer.opacity = 1.0;
         self->backButton.layer.opacity = 1.0;
-        [self->tableView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->cardLikeContent.layoutFrame.size.width), 0))];
+        [self->tableView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->activeCard.content.layoutFrame.size.width), 0))];
         //[self->tableView setTransform:CGAffineTransformMakeTranslation(-1 * (self->cardLike.bounds.size.width), 0)];
         [self->meaningVC.view setTransform:CGAffineTransformIdentity];
         self->state = CardViewStateMeaning;
@@ -429,7 +451,7 @@
         self->meaningTitle.layer.opacity = 0.0;
         self->backButton.layer.opacity = 0.0;
         [self->tableView setTransform:CGAffineTransformIdentity];
-        [self->meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->cardLike.bounds.size.width), 0))];
+        [self->meaningVC.view setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->activeCard.bounds.size.width), 0))];
     } completion:^(BOOL finished) {
         [self->meaningTitle removeFromSuperview];
         [self->backButton removeFromSuperview];
@@ -449,8 +471,9 @@
         self->searchBarYActive.active = YES;
         self->searchBar.layer.opacity = 0.0;
         
-        self->cardLikeTopInactive.active = NO;
-        self->cardLikeTopLearnActive.active = YES;
+        self->activeCard.closedConstraint.active = NO;
+        self->activeCard.learningConstraint.active = YES;
+        [self->backCard setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
         
         [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
         
@@ -470,8 +493,16 @@
         self->searchBarYInactive.active = YES;
         self->searchBar.layer.opacity = 1.0;
         
-        self->cardLikeTopLearnActive.active = NO;
-        self->cardLikeTopInactive.active = YES;
+        self->activeCard.learningConstraint.active = NO;
+        self->activeCard.closedConstraint.active = YES;
+        self->backCard.learningConstraint.active = NO;
+        self->backCard.closedConstraint.active = YES;
+        
+        [self.view layoutIfNeeded];
+        
+        [self->backCard setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.85, 0.85), CGAffineTransformMakeTranslation(0, -(backCard.bounds.size.height * 0.075 + 7)))];
+        
+        self->learningVC.view.layer.opacity = 1.0;
         
         [self->tabBar setTransform:CGAffineTransformIdentity];
         
@@ -490,9 +521,10 @@
         self->searchBarYInactive.active = NO;
         self->searchBarYActive.active = YES;
         
-        self->cardLikeTopInactive.active = NO;
-        self->cardLikeTopSearchActive.active = YES;
+        self->activeCard.closedConstraint.active = NO;
+        self->activeCard.searchingConstraint.active = YES;
         
+        self->learningVC.view.layer.opacity = 0.0;
         self->tableView.layer.opacity = 1.0;
         
         [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
@@ -501,7 +533,7 @@
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->activeInSearchCardY = self->cardLike.frame.origin.y;
+        self->activeInSearchCardY = self->activeCard.frame.origin.y;
         self->state = CardViewStateSearching;
     }];
     
@@ -513,9 +545,10 @@
         self->searchBarYActive.active = NO;
         self->searchBarYInactive.active = YES;
         
-        self->cardLikeTopSearchActive.active = NO;
-        self->cardLikeTopInactive.active = YES;
+        self->activeCard.searchingConstraint.active = NO;
+        self->activeCard.closedConstraint.active = YES;
         
+        self->learningVC.view.layer.opacity = 1.0;
         self->tableView.layer.opacity = 0.0;
         
         [self->tabBar setTransform:CGAffineTransformIdentity];
@@ -545,9 +578,10 @@
             self.rightHeaderView.layer.opacity = 1.0;
         }
         
-        self->cardLikeTopInactive.active = NO;
-        self->cardLikeTopSearchActive.active = YES;
+        self->activeCard.closedConstraint.active = NO;
+        self->activeCard.searchingConstraint.active = YES;
         
+        self->learningVC.view.layer.opacity = 0.0;
         self->meaningVC.view.layer.opacity = 1.0;
         
         [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
@@ -575,9 +609,10 @@
             self.rightHeaderView.layer.opacity = 0.0;
         }
         
-        self->cardLikeTopSearchActive.active = NO;
-        self->cardLikeTopInactive.active = YES;
+        self->activeCard.searchingConstraint.active = YES;
+        self->activeCard.closedConstraint.active = YES;
         
+        self->learningVC.view.layer.opacity = 1.0;
         self->meaningVC.view.layer.opacity = 0.0;
         
         [self->tabBar setTransform:CGAffineTransformIdentity];
@@ -618,6 +653,56 @@
     }
 }
 
+- (void)showNextCard {
+    CardView *tempCard = activeCard;
+    
+    activeCard = backCard;
+    
+    [activeCard addGestureRecognizer:recognizer];
+    
+    [self->learningVC willMoveToParentViewController:nil];
+    [self->learningVC.view removeFromSuperview];
+    [self->learningVC removeFromParentViewController];
+    [self mountLearningVC];
+    [self->learningVC setLearnState];
+
+    backCard = [[CardView alloc] init];
+    backCard.backgroundColor = [UIColor colorNamed:@"backCard"];
+    
+    [self.view insertSubview:backCard belowSubview:activeCard];
+    
+    backCard.closedConstraint = [backCard.topAnchor constraintEqualToAnchor:searchBarContainer.bottomAnchor];
+    backCard.searchingConstraint = [backCard.topAnchor constraintEqualToAnchor:self->searchBar.bottomAnchor constant:10];
+    backCard.learningConstraint = [backCard.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10];
+    
+    backCard.learningConstraint.active = YES;
+    
+    [backCard.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [backCard.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [backCard.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    
+    [backCard setNeedsLayout];
+    [backCard layoutIfNeeded];
+    
+    [backCard setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
+    
+    [animator addAnimations:^{
+        [tempCard setTransform:CGAffineTransformMakeTranslation(-1 * (self->activeCard.bounds.size.width), 0)];
+        [self->activeCard setTransform:CGAffineTransformIdentity];
+        self->activeCard.closedConstraint.active = NO;
+        self->activeCard.learningConstraint.active = YES;
+        activeCard.backgroundColor = [UIColor colorNamed:@"card"];
+        
+        [self->activeCard layoutIfNeeded];
+    }];
+    
+    [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
+        [tempCard removeFromSuperview];
+    }];
+    
+    [animator startAnimation];
+}
+
 - (void)pullerPanned:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         if (state == CardViewStateMeaning) {
@@ -626,8 +711,12 @@
             [self closeOnSearch];
         } else if (state == CardViewStateLearning) {
             [self closeOnLearning];
+            [self->learningVC closeToLearn];
+            [self->learningVC.animator pauseAnimation];
         } else {
             [self openOnLearning];
+            [self->learningVC openToLearn];
+            [self->learningVC.animator pauseAnimation];
         }
         [animator pauseAnimation];
         return;
@@ -640,8 +729,10 @@
             factor = translation.y / (inactiveCardY - activeInSearchCardY);
         } else if (state == CardViewStateLearning) {
             factor = translation.y / (inactiveCardY - activeCardY);
+            self->learningVC.animator.fractionComplete = factor;
         } else {
             factor = -1 * translation.y / (inactiveCardY - activeCardY);
+            self->learningVC.animator.fractionComplete = factor;
         }
         
         animator.fractionComplete = factor;
@@ -675,17 +766,23 @@
             factor = translation.y / (inactiveCardY - activeCardY);
             if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
                 [animator continueAnimationWithTimingParameters:nil durationFactor:0];
+                [self->learningVC.animator continueAnimationWithTimingParameters:nil durationFactor:0];
             } else {
                 [animator stopAnimation:YES];
                 [self openOnLearning];
+                [self->learningVC.animator stopAnimation:YES];
+                [self->learningVC openToLearn];
             }
         } else {
             factor = -1 * translation.y / (inactiveCardY - activeCardY);
             if (fabs(factor) > 0.5 || fabs(velocity.y) > 100) {
                 [animator continueAnimationWithTimingParameters:nil durationFactor:0];
+                [self->learningVC.animator continueAnimationWithTimingParameters:nil durationFactor:0];
             } else {
                 [animator stopAnimation:YES];
                 [self closeOnLearning];
+                [self->learningVC.animator stopAnimation:YES];
+                [self->learningVC closeToLearn];
             }
         }
         return;

@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedInstance;
 - (void)addMWCards:(NSArray<NSDictionary *>*)entries;
+- (MWCard *)getUpcomingCard;
+- (MWCard *)getNextToUpcomingCard;
 
 @property (nonatomic, copy) NSArray *upcoming;
 

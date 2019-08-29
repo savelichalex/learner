@@ -25,8 +25,13 @@
         }
       ],
       "color" : {
-        "platform" : "ios",
-        "reference" : "tertiarySystemBackgroundColor"
+        "color-space" : "display-p3",
+        "components" : {
+          "red" : "0.098",
+          "alpha" : "1.000",
+          "blue" : "0.102",
+          "green" : "0.094"
+        }
       }
     }
   ]

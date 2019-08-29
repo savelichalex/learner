@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, CardViewState) {
 @property (strong, nonatomic, nullable) UIView *rightHeaderView;
 
 - (void)closeCard;
+- (void)showNextCard;
 
 @end
 
