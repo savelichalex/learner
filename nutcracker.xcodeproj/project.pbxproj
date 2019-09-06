@@ -9,20 +9,14 @@
 /* Begin PBXBuildFile section */
 		84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */; };
 		84AF18612233ECAF0026DEB3 /* Cards.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF18602233ECAF0026DEB3 /* Cards.m */; };
-		84AF1864223410650026DEB3 /* UpcomingPickingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */; };
-		84AF1867223520E60026DEB3 /* MWCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF1866223520E60026DEB3 /* MWCardView.m */; };
 		84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966DD222563A9002C3A08 /* AppDelegate.m */; };
-		84B966E1222563A9002C3A08 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966E0222563A9002C3A08 /* ViewController.m */; };
 		84B966E4222563A9002C3A08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E2222563A9002C3A08 /* Main.storyboard */; };
 		84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */; };
 		84B966E9222563AB002C3A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E8222563AB002C3A08 /* Assets.xcassets */; };
 		84B966EC222563AB002C3A08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966EA222563AB002C3A08 /* LaunchScreen.storyboard */; };
 		84B966EF222563AB002C3A08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966EE222563AB002C3A08 /* main.m */; };
-		84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966F62225640F002C3A08 /* DictionaryApiParser.m */; };
-		84B966F922269DC4002C3A08 /* appeal.json in Resources */ = {isa = PBXBuildFile; fileRef = 84B966F822269DC4002C3A08 /* appeal.json */; };
 		84F07608222C134200E8008C /* MeaningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F07607222C134200E8008C /* MeaningViewController.m */; };
 		84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F0760A222F178700E8008C /* ChoosableLabel.m */; };
-		A60219CC22C0D1EA0082ACE3 /* download.m in Sources */ = {isa = PBXBuildFile; fileRef = A60219CB22C0D1EA0082ACE3 /* download.m */; };
 		A60219CF22C113B10082ACE3 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A60219CE22C113B10082ACE3 /* libxml2.tbd */; };
 		A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A641C182230DA8D3002A5974 /* HomeViewController.m */; };
 		A681D91623224C0E000D1010 /* TermMeaningModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A681D91523224C0E000D1010 /* TermMeaningModel.m */; };
@@ -36,29 +30,19 @@
 		84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableDef.m; sourceTree = "<group>"; };
 		84AF185F2233ECAF0026DEB3 /* Cards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cards.h; sourceTree = "<group>"; };
 		84AF18602233ECAF0026DEB3 /* Cards.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cards.m; sourceTree = "<group>"; };
-		84AF1862223410650026DEB3 /* UpcomingPickingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpcomingPickingViewController.h; sourceTree = "<group>"; };
-		84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpcomingPickingViewController.m; sourceTree = "<group>"; };
-		84AF1865223520E60026DEB3 /* MWCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWCardView.h; sourceTree = "<group>"; };
-		84AF1866223520E60026DEB3 /* MWCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWCardView.m; sourceTree = "<group>"; };
 		84B966D9222563A9002C3A08 /* nutcracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nutcracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B966DC222563A9002C3A08 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84B966DD222563A9002C3A08 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		84B966DF222563A9002C3A08 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		84B966E0222563A9002C3A08 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		84B966E3222563A9002C3A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84B966E6222563A9002C3A08 /* rememberify.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = rememberify.xcdatamodel; sourceTree = "<group>"; };
 		84B966E8222563AB002C3A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84B966EB222563AB002C3A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84B966ED222563AB002C3A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B966EE222563AB002C3A08 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		84B966F52225640F002C3A08 /* DictionaryApiParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DictionaryApiParser.h; sourceTree = "<group>"; };
-		84B966F62225640F002C3A08 /* DictionaryApiParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DictionaryApiParser.m; sourceTree = "<group>"; };
-		84B966F822269DC4002C3A08 /* appeal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = appeal.json; sourceTree = "<group>"; };
 		84F07606222C134200E8008C /* MeaningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeaningViewController.h; sourceTree = "<group>"; };
 		84F07607222C134200E8008C /* MeaningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeaningViewController.m; sourceTree = "<group>"; };
 		84F07609222F178700E8008C /* ChoosableLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChoosableLabel.h; sourceTree = "<group>"; };
 		84F0760A222F178700E8008C /* ChoosableLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableLabel.m; sourceTree = "<group>"; };
-		A60219CB22C0D1EA0082ACE3 /* download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = download.m; sourceTree = SOURCE_ROOT; };
 		A60219CE22C113B10082ACE3 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		A641C181230DA8D3002A5974 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		A641C182230DA8D3002A5974 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -104,20 +88,14 @@
 		84B966DB222563A9002C3A08 /* nutcracker */ = {
 			isa = PBXGroup;
 			children = (
-				A60219CB22C0D1EA0082ACE3 /* download.m */,
 				84B966DC222563A9002C3A08 /* AppDelegate.h */,
 				84B966DD222563A9002C3A08 /* AppDelegate.m */,
-				84B966DF222563A9002C3A08 /* ViewController.h */,
-				84B966E0222563A9002C3A08 /* ViewController.m */,
 				84B966E2222563A9002C3A08 /* Main.storyboard */,
 				84B966E8222563AB002C3A08 /* Assets.xcassets */,
 				84B966EA222563AB002C3A08 /* LaunchScreen.storyboard */,
 				84B966ED222563AB002C3A08 /* Info.plist */,
 				84B966EE222563AB002C3A08 /* main.m */,
 				84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */,
-				84B966F52225640F002C3A08 /* DictionaryApiParser.h */,
-				84B966F62225640F002C3A08 /* DictionaryApiParser.m */,
-				84B966F822269DC4002C3A08 /* appeal.json */,
 				84F07606222C134200E8008C /* MeaningViewController.h */,
 				84F07607222C134200E8008C /* MeaningViewController.m */,
 				84F07609222F178700E8008C /* ChoosableLabel.h */,
@@ -126,10 +104,6 @@
 				84AF185D2233BF3A0026DEB3 /* ChoosableDef.m */,
 				84AF185F2233ECAF0026DEB3 /* Cards.h */,
 				84AF18602233ECAF0026DEB3 /* Cards.m */,
-				84AF1862223410650026DEB3 /* UpcomingPickingViewController.h */,
-				84AF1863223410650026DEB3 /* UpcomingPickingViewController.m */,
-				84AF1865223520E60026DEB3 /* MWCardView.h */,
-				84AF1866223520E60026DEB3 /* MWCardView.m */,
 				A641C181230DA8D3002A5974 /* HomeViewController.h */,
 				A641C182230DA8D3002A5974 /* HomeViewController.m */,
 				A6F524452310490C0041D747 /* IconUtils.h */,
@@ -210,7 +184,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84B966EC222563AB002C3A08 /* LaunchScreen.storyboard in Resources */,
-				84B966F922269DC4002C3A08 /* appeal.json in Resources */,
 				84B966E9222563AB002C3A08 /* Assets.xcassets in Resources */,
 				84B966E4222563A9002C3A08 /* Main.storyboard in Resources */,
 			);
@@ -226,17 +199,12 @@
 				A681D91623224C0E000D1010 /* TermMeaningModel.m in Sources */,
 				A6F524472310490C0041D747 /* IconUtils.m in Sources */,
 				84AF18612233ECAF0026DEB3 /* Cards.m in Sources */,
-				84AF1867223520E60026DEB3 /* MWCardView.m in Sources */,
 				84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */,
 				A6F5244A231129B90041D747 /* UpcomingViewController.m in Sources */,
-				84AF1864223410650026DEB3 /* UpcomingPickingViewController.m in Sources */,
 				84F07608222C134200E8008C /* MeaningViewController.m in Sources */,
-				84B966E1222563A9002C3A08 /* ViewController.m in Sources */,
 				84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */,
-				84B966F72225640F002C3A08 /* DictionaryApiParser.m in Sources */,
 				A6F5244D2311362E0041D747 /* CardView.m in Sources */,
 				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
-				A60219CC22C0D1EA0082ACE3 /* download.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,
 				84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */,
 				A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */,

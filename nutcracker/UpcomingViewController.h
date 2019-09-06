@@ -10,6 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, CardQualityFeedback) {
+    CardQualityFeedbackPerfect,
+    CardQualityFeedbackCorrectWithDelay,
+    CardQualityFeedbackCorrectButHard,
+    CardQualityFeedbackIncorrect
+};
+
 @interface UpcomingViewController : UIViewController
 
 @property (readonly) UIViewPropertyAnimator *animator;
