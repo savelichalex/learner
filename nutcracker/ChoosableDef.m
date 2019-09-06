@@ -14,7 +14,7 @@
     void(^_onTap)(BOOL);
 }
 
-- (instancetype)initWithEntryItem:(EntryItem *)item formType:(NSString *)type headword:(nonnull NSString *)headword onTap:(void(^)(BOOL isActive))onTap {
+- (instancetype)initWithEntryItem:(TermMeaningDef *)item formType:(NSString *)type headword:(nonnull NSString *)headword onTap:(void(^)(BOOL isActive))onTap {
     self = [super init];
     if (self) {
         _item = item;
@@ -36,7 +36,7 @@
         [self addSubview:backView];
         
         UILabel* defLabel = [[UILabel alloc] init];
-        defLabel.text = item.def; // TODO: preprocess it
+        defLabel.text = item.meaning;
         [defLabel setLineBreakMode:NSLineBreakByWordWrapping];
         defLabel.numberOfLines = 0;
         

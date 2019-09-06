@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DictionaryApiParser.h"
+#import "TermMeaningModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ChoosableDef : UIStackView
 
-- (instancetype)initWithEntryItem:(EntryItem *)item formType:(NSString *)type headword:(NSString *)headword onTap:(void(^)(BOOL isActive))onTap;
+- (instancetype)initWithEntryItem:(TermMeaningDef *)item formType:(NSString *)type headword:(NSString *)headword onTap:(void(^)(BOOL isActive))onTap;
 
-@property (nonatomic, copy) EntryItem *item;
+@property (nonatomic, copy) TermMeaningDef *item;
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *headword;
 @property (nonatomic) Boolean isActive;

@@ -387,7 +387,7 @@
     [backButton.heightAnchor constraintEqualToConstant:20].active = YES;
     
     // content
-    meaningVC = [[MeaningViewController alloc] initWithWord:@"appeal"];
+    meaningVC = [[MeaningViewController alloc] initWithWord:[words objectAtIndex:indexPath.row]];
     [self addChildViewController:meaningVC];
     meaningVC.view.frame = activeCard.content.layoutFrame;
     meaningVC.view.translatesAutoresizingMaskIntoConstraints = NO;
