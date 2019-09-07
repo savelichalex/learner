@@ -114,27 +114,35 @@
 }
 
 - (void)openToLearn {
+    __weak UpcomingViewController *weakThis = self;
     [_animator addAnimations:^{
-        [self setLearnState];
+        UpcomingViewController *this = weakThis;
+        if (this == nil) return;
+        
+        [this setLearnState];
     }];
     
     [_animator startAnimation];
 }
 
 - (void)closeToLearn {
+    __weak UpcomingViewController *weakThis = self;
     [_animator addAnimations:^{
-        self->header.layer.opacity = 1.0;
+        UpcomingViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->wordLearningFrontConstraint.active = NO;
-        self->wordLearningAnswerConstraint.active = NO;
-        self->wordClosedConstraint.active = YES;
+        this->header.layer.opacity = 1.0;
         
-        self->showAnswerButton.layer.opacity = 0.0;
-        if (self->answerQualityButtons != nil) {
-            self->answerQualityButtons.layer.opacity = 0.0;
+        this->wordLearningFrontConstraint.active = NO;
+        this->wordLearningAnswerConstraint.active = NO;
+        this->wordClosedConstraint.active = YES;
+        
+        this->showAnswerButton.layer.opacity = 0.0;
+        if (this->answerQualityButtons != nil) {
+            this->answerQualityButtons.layer.opacity = 0.0;
         }
         
-        [self.view layoutIfNeeded];
+        [this.view layoutIfNeeded];
     }];
     
     [_animator startAnimation];
@@ -171,14 +179,18 @@
     
     [self.view layoutIfNeeded];
     
+    __weak UpcomingViewController *weakThis = self;
     [_animator addAnimations:^{
-        self->wordLearningFrontConstraint.active = NO;
-        self->wordLearningAnswerConstraint.active = YES;
+        UpcomingViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->showAnswerButton.layer.opacity = 0.0;
-        self->answerQualityButtons.layer.opacity = 1.0;
+        this->wordLearningFrontConstraint.active = NO;
+        this->wordLearningAnswerConstraint.active = YES;
         
-        [self.view layoutIfNeeded];
+        this->showAnswerButton.layer.opacity = 0.0;
+        this->answerQualityButtons.layer.opacity = 1.0;
+        
+        [this.view layoutIfNeeded];
     }];
     
     [_animator startAnimation];

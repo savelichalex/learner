@@ -58,7 +58,9 @@ NSString* getClassName(xmlNodePtr node) {
 
 @end
 
-@implementation TermMeaningModel
+@implementation TermMeaningModel {
+    NSString *smth;
+}
 
 @synthesize forms;
 

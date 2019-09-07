@@ -7,7 +7,6 @@
 //
 
 #import "HomeViewController.h"
-#import "MWCardView.h"
 #import "Cards.h"
 #import "MeaningViewController.h"
 #import "UpcomingViewController.h"
@@ -165,22 +164,6 @@
     [backCard setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.85, 0.85), CGAffineTransformMakeTranslation(0, -(backCard.bounds.size.height * 0.075 + 7)))];
     
     // autocomplete
-    
-    // card content
-    
-
-//
-//    MWCardView *content = [[MWCardView alloc] initWithCardData:[[Cards sharedInstance] upcoming][0]];
-//    content.translatesAutoresizingMaskIntoConstraints = NO;
-//
-//    [cardLike addSubview:content];
-//
-//    [content.topAnchor constraintEqualToAnchor:cardLikePullBar.bottomAnchor].active = YES;
-//    [content.leftAnchor constraintEqualToAnchor:cardLike.leftAnchor].active = YES;
-//    [content.rightAnchor constraintEqualToAnchor:cardLike.rightAnchor].active = YES;
-//    [content.bottomAnchor constraintEqualToAnchor:cardLike.bottomAnchor].active = YES;
-//
-//    [content render];
     
     // tab bar
     tabBar = [[UIView alloc] init];
@@ -466,174 +449,216 @@
 }
 
 - (void)openOnLearning {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYInactive.active = NO;
-        self->searchBarYActive.active = YES;
-        self->searchBar.layer.opacity = 0.0;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->activeCard.closedConstraint.active = NO;
-        self->activeCard.learningConstraint.active = YES;
-        [self->backCard setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
+        this->searchBarYInactive.active = NO;
+        this->searchBarYActive.active = YES;
+        this->searchBar.layer.opacity = 0.0;
         
-        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        this->activeCard.closedConstraint.active = NO;
+        this->activeCard.learningConstraint.active = YES;
+        [this->backCard setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
         
-        [self.view layoutIfNeeded];
+        [this->tabBar setTransform:CGAffineTransformMakeTranslation(0, this->tabBar.bounds.size.height)];
+        
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->state = CardViewStateLearning;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->state = CardViewStateLearning;
     }];
     
     [animator startAnimation];
 }
 
 - (void)closeOnLearning {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYActive.active = NO;
-        self->searchBarYInactive.active = YES;
-        self->searchBar.layer.opacity = 1.0;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->activeCard.learningConstraint.active = NO;
-        self->activeCard.closedConstraint.active = YES;
-        self->backCard.learningConstraint.active = NO;
-        self->backCard.closedConstraint.active = YES;
+        this->searchBarYActive.active = NO;
+        this->searchBarYInactive.active = YES;
+        this->searchBar.layer.opacity = 1.0;
         
-        [self.view layoutIfNeeded];
+        this->activeCard.learningConstraint.active = NO;
+        this->activeCard.closedConstraint.active = YES;
+        this->backCard.learningConstraint.active = NO;
+        this->backCard.closedConstraint.active = YES;
         
-        [self->backCard setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.85, 0.85), CGAffineTransformMakeTranslation(0, -(backCard.bounds.size.height * 0.075 + 7)))];
+        [this.view layoutIfNeeded];
         
-        self->learningVC.view.layer.opacity = 1.0;
+        [this->backCard setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.85, 0.85), CGAffineTransformMakeTranslation(0, -(this->backCard.bounds.size.height * 0.075 + 7)))];
         
-        [self->tabBar setTransform:CGAffineTransformIdentity];
+        this->learningVC.view.layer.opacity = 1.0;
         
-        [self.view layoutIfNeeded];
+        [this->tabBar setTransform:CGAffineTransformIdentity];
+        
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->state = CardViewStateClosed;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->state = CardViewStateClosed;
     }];
     
     [animator startAnimation];
 }
 
 - (void)openOnSearch {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYInactive.active = NO;
-        self->searchBarYActive.active = YES;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->activeCard.closedConstraint.active = NO;
-        self->activeCard.searchingConstraint.active = YES;
+        this->searchBarYInactive.active = NO;
+        this->searchBarYActive.active = YES;
         
-        self->learningVC.view.layer.opacity = 0.0;
-        self->tableView.layer.opacity = 1.0;
+        this->activeCard.closedConstraint.active = NO;
+        this->activeCard.searchingConstraint.active = YES;
         
-        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        this->learningVC.view.layer.opacity = 0.0;
+        this->tableView.layer.opacity = 1.0;
         
-        [self.view layoutIfNeeded];
+        [this->tabBar setTransform:CGAffineTransformMakeTranslation(0, this->tabBar.bounds.size.height)];
+        
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->activeInSearchCardY = self->activeCard.frame.origin.y;
-        self->state = CardViewStateSearching;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->activeInSearchCardY = this->activeCard.frame.origin.y;
+        this->state = CardViewStateSearching;
     }];
     
     [animator startAnimation];
 }
 
 - (void)closeOnSearch {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYActive.active = NO;
-        self->searchBarYInactive.active = YES;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
         
-        self->activeCard.searchingConstraint.active = NO;
-        self->activeCard.closedConstraint.active = YES;
+        this->searchBarYActive.active = NO;
+        this->searchBarYInactive.active = YES;
         
-        self->learningVC.view.layer.opacity = 1.0;
-        self->tableView.layer.opacity = 0.0;
+        this->activeCard.searchingConstraint.active = NO;
+        this->activeCard.closedConstraint.active = YES;
         
-        [self->tabBar setTransform:CGAffineTransformIdentity];
+        this->learningVC.view.layer.opacity = 1.0;
+        this->tableView.layer.opacity = 0.0;
         
-        [self.view layoutIfNeeded];
+        [this->tabBar setTransform:CGAffineTransformIdentity];
+        
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        //[self->searchBar resignFirstResponder];
-        [self->tableView removeFromSuperview];
-        self->state = CardViewStateClosed;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        //[this->searchBar resignFirstResponder];
+        [this->tableView removeFromSuperview];
+        this->state = CardViewStateClosed;
     }];
     
     [animator startAnimation];
 }
 
 - (void)openOnMeaning {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYInactive.active = NO;
-        self->searchBarYActive.active = YES;
-        [self->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (self->searchBarContainer.bounds.size.width), 0))];
-        self->searchBar.layer.opacity = 0.0;
-        [self->meaningTitle setTransform:CGAffineTransformIdentity];
-        self->meaningTitle.layer.opacity = 1.0;
-        self->backButton.layer.opacity = 1.0;
-        if (self.rightHeaderView) {
-            self.rightHeaderView.layer.opacity = 1.0;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->searchBarYInactive.active = NO;
+        this->searchBarYActive.active = YES;
+        [this->searchBar setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation(-1 * (this->searchBarContainer.bounds.size.width), 0))];
+        this->searchBar.layer.opacity = 0.0;
+        [this->meaningTitle setTransform:CGAffineTransformIdentity];
+        this->meaningTitle.layer.opacity = 1.0;
+        this->backButton.layer.opacity = 1.0;
+        if (this.rightHeaderView) {
+            this.rightHeaderView.layer.opacity = 1.0;
         }
         
-        self->activeCard.closedConstraint.active = NO;
-        self->activeCard.searchingConstraint.active = YES;
+        this->activeCard.closedConstraint.active = NO;
+        this->activeCard.searchingConstraint.active = YES;
         
-        self->learningVC.view.layer.opacity = 0.0;
-        self->meaningVC.view.layer.opacity = 1.0;
+        this->learningVC.view.layer.opacity = 0.0;
+        this->meaningVC.view.layer.opacity = 1.0;
         
-        [self->tabBar setTransform:CGAffineTransformMakeTranslation(0, self->tabBar.bounds.size.height)];
+        [this->tabBar setTransform:CGAffineTransformMakeTranslation(0, this->tabBar.bounds.size.height)];
         
-        [self.view layoutIfNeeded];
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        self->state = CardViewStateMeaning;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->state = CardViewStateMeaning;
     }];
     
     [animator startAnimation];
 }
 
 - (void)closeOnMeaning {
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        self->searchBarYActive.active = NO;
-        self->searchBarYInactive.active = YES;
-        [self->searchBar setTransform:CGAffineTransformIdentity];
-        self->searchBar.layer.opacity = 1.0;
-        [self->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (self->searchBarContainer.bounds.size.width), 0))];
-        self->meaningTitle.layer.opacity = 0.0;
-        self->backButton.layer.opacity = 0.0;
-        if (self.rightHeaderView) {
-            self.rightHeaderView.layer.opacity = 0.0;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        this->searchBarYActive.active = NO;
+        this->searchBarYInactive.active = YES;
+        [this->searchBar setTransform:CGAffineTransformIdentity];
+        this->searchBar.layer.opacity = 1.0;
+        [this->meaningTitle setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(0.9, 0.9), CGAffineTransformMakeTranslation( (this->searchBarContainer.bounds.size.width), 0))];
+        this->meaningTitle.layer.opacity = 0.0;
+        this->backButton.layer.opacity = 0.0;
+        if (this.rightHeaderView) {
+            this.rightHeaderView.layer.opacity = 0.0;
         }
         
-        self->activeCard.searchingConstraint.active = YES;
-        self->activeCard.closedConstraint.active = YES;
+        this->activeCard.searchingConstraint.active = YES;
+        this->activeCard.closedConstraint.active = YES;
         
-        self->learningVC.view.layer.opacity = 1.0;
-        self->meaningVC.view.layer.opacity = 0.0;
+        this->learningVC.view.layer.opacity = 1.0;
+        this->meaningVC.view.layer.opacity = 0.0;
         
-        [self->tabBar setTransform:CGAffineTransformIdentity];
+        [this->tabBar setTransform:CGAffineTransformIdentity];
         
-        [self.view layoutIfNeeded];
+        [this.view layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
-        [self->meaningTitle removeFromSuperview];
-        [self->backButton removeFromSuperview];
-        if (self.rightHeaderView != nil) {
-            self.rightHeaderView = nil;
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
+        
+        [this->meaningTitle removeFromSuperview];
+        [this->backButton removeFromSuperview];
+        if (this.rightHeaderView != nil) {
+            this.rightHeaderView = nil;
         }
         
-        [self->meaningVC willMoveToParentViewController:nil];
-        [self->meaningVC.view removeFromSuperview];
-        [self->meaningVC removeFromParentViewController];
+        [this->meaningVC willMoveToParentViewController:nil];
+        [this->meaningVC.view removeFromSuperview];
+        [this->meaningVC removeFromParentViewController];
         
-        [self->tableView removeFromSuperview];
+        [this->tableView removeFromSuperview];
         
-        self->state = CardViewStateClosed;
+        this->state = CardViewStateClosed;
     }];
     
     [animator startAnimation];
@@ -686,14 +711,18 @@
     
     [backCard setTransform:CGAffineTransformMakeScale(0.85, 0.85)];
     
+    __weak HomeViewController *weakThis = self;
     [animator addAnimations:^{
-        [tempCard setTransform:CGAffineTransformMakeTranslation(-1 * (self->activeCard.bounds.size.width), 0)];
-        [self->activeCard setTransform:CGAffineTransformIdentity];
-        self->activeCard.closedConstraint.active = NO;
-        self->activeCard.learningConstraint.active = YES;
-        activeCard.backgroundColor = [UIColor colorNamed:@"card"];
+        HomeViewController *this = weakThis;
+        if (this == nil) return;
         
-        [self->activeCard layoutIfNeeded];
+        [tempCard setTransform:CGAffineTransformMakeTranslation(-1 * (this->activeCard.bounds.size.width), 0)];
+        [this->activeCard setTransform:CGAffineTransformIdentity];
+        this->activeCard.closedConstraint.active = NO;
+        this->activeCard.learningConstraint.active = YES;
+        this->activeCard.backgroundColor = [UIColor colorNamed:@"card"];
+        
+        [this->activeCard layoutIfNeeded];
     }];
     
     [animator addCompletion:^(UIViewAnimatingPosition finalPosition) {
