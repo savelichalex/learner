@@ -36,6 +36,11 @@ static NSString *cardType = @"MWCard";
         NSError *error = nil;
         upcomingTerms = [managedContext executeFetchRequest:[TermToLearn fetchRequest] error:&error];
         
+//        for (NSManagedObject *o in upcomingTerms) {
+//            [managedContext deleteObject:o];
+//        }
+//        [managedContext save:&error];
+        
         if (error != nil) {
             // TODO: error here
         }

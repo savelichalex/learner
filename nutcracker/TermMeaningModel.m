@@ -35,12 +35,20 @@ NSString* getClassName(xmlNodePtr node) {
 
 @implementation TermMeaningDef
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.isChoosedForLearning = NO;
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super init];
     if (self) {
         self.meaning = [coder decodeObjectForKey:@"meaning"];
         self.examples = [coder decodeObjectForKey:@"examples"];
-        self.isChoosedForLearning = NO;
+        self.isChoosedForLearning = [coder decodeBoolForKey:@"isChoosedForLearning"];
     }
     return self;
 }
@@ -48,6 +56,7 @@ NSString* getClassName(xmlNodePtr node) {
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.meaning forKey:@"meaning"];
     [coder encodeObject:self.examples forKey:@"examples"];
+    [coder encodeBool:self.isChoosedForLearning forKey:@"isChoosedForLearning"];
 }
 
 @end
