@@ -7,21 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+@import CoreData;
+#import "TermToLearn+CoreDataClass.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TermMeaningDef : NSObject
+@interface TermMeaningDef : NSObject<NSCoding>
 
 @property (nonatomic, copy) NSString *meaning;
 @property (nonatomic, copy) NSArray *examples;
+@property (nonatomic) BOOL isChoosedForLearning;
 
 @end
 
-@interface TermMeaningForm : NSObject
+@interface TermMeaningForm : NSObject<NSCoding>
 
 @property (readonly) NSString *form;
 @property (readonly) NSString *pron;
-@property (readonly) NSArray<NSDictionary *> *defs;
+@property (readonly) NSArray<TermMeaningDef *> *defs;
 
 @end
 
@@ -36,6 +39,7 @@ typedef NS_ENUM(NSInteger, MeaningFetchStatus) {
 + (instancetype)instanceForTerm:(NSString *)term;
 
 - (instancetype)initWithTerm:(NSString *)term;
+- (instancetype)initWithPersistedData:(TermToLearn *)term;
 - (BOOL)isFetchStatusEqualTo:(MeaningFetchStatus)status;
 
 @property (readonly) NSString *term;

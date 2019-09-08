@@ -34,13 +34,29 @@ NSString* getClassName(xmlNodePtr node) {
 }
 
 @implementation TermMeaningDef
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super init];
+    if (self) {
+        self.meaning = [coder decodeObjectForKey:@"meaning"];
+        self.examples = [coder decodeObjectForKey:@"examples"];
+        self.isChoosedForLearning = NO;
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.meaning forKey:@"meaning"];
+    [coder encodeObject:self.examples forKey:@"examples"];
+}
+
 @end
 
 @interface TermMeaningForm ()
 
 @property (readwrite, copy) NSString *form;
 @property (readwrite, copy) NSString *pron;
-@property (readwrite, copy) NSArray<NSDictionary *> *defs;
+@property (readwrite, copy) NSArray<TermMeaningDef *> *defs;
 
 @end
 
@@ -49,6 +65,22 @@ NSString* getClassName(xmlNodePtr node) {
 @synthesize form;
 @synthesize pron;
 @synthesize defs;
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super init];
+    if (self) {
+        self.form = [coder decodeObjectForKey:@"form"];
+        self.pron = [coder decodeObjectForKey:@"pron"];
+        self.defs = [coder decodeObjectForKey:@"defs"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.form forKey:@"form"];
+    [coder encodeObject:self.pron forKey:@"pron"];
+    [coder encodeObject:self.defs forKey:@"defs"];
+}
 
 @end
 
@@ -355,6 +387,16 @@ NSString* getClassName(xmlNodePtr node) {
     if (self) {
         _term = term;
         _fetchStatus = @(MeaningFetchStatusProgress);
+    }
+    return self;
+}
+
+- (instancetype)initWithPersistedData:(TermToLearn *)term {
+    self = [super init];
+    if (self) {
+        _term = term.term;
+        self.forms = (NSArray<TermMeaningForm *> *)term.forms;
+        _fetchStatus = @(MeaningFetchStatusSuccess);
     }
     return self;
 }

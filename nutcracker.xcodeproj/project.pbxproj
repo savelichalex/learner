@@ -11,15 +11,19 @@
 		84AF18612233ECAF0026DEB3 /* Cards.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AF18602233ECAF0026DEB3 /* Cards.m */; };
 		84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966DD222563A9002C3A08 /* AppDelegate.m */; };
 		84B966E4222563A9002C3A08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E2222563A9002C3A08 /* Main.storyboard */; };
-		84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */; };
 		84B966E9222563AB002C3A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84B966E8222563AB002C3A08 /* Assets.xcassets */; };
 		84B966EC222563AB002C3A08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B966EA222563AB002C3A08 /* LaunchScreen.storyboard */; };
 		84B966EF222563AB002C3A08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B966EE222563AB002C3A08 /* main.m */; };
 		84F07608222C134200E8008C /* MeaningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F07607222C134200E8008C /* MeaningViewController.m */; };
 		84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F0760A222F178700E8008C /* ChoosableLabel.m */; };
 		A60219CF22C113B10082ACE3 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A60219CE22C113B10082ACE3 /* libxml2.tbd */; };
+		A6179699232522620006AD18 /* RecallLog+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A6179697232522620006AD18 /* RecallLog+CoreDataClass.m */; };
+		A617969A232522620006AD18 /* RecallLog+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = A6179698232522620006AD18 /* RecallLog+CoreDataProperties.m */; };
+		A617969F232523330006AD18 /* TermToLearn+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A617969D232523330006AD18 /* TermToLearn+CoreDataClass.m */; };
+		A61796A0232523330006AD18 /* TermToLearn+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = A617969E232523330006AD18 /* TermToLearn+CoreDataProperties.m */; };
 		A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A641C182230DA8D3002A5974 /* HomeViewController.m */; };
 		A681D91623224C0E000D1010 /* TermMeaningModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A681D91523224C0E000D1010 /* TermMeaningModel.m */; };
+		A681D9212323D9B0000D1010 /* nutcracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A681D91F2323D9B0000D1010 /* nutcracker.xcdatamodeld */; };
 		A6F524472310490C0041D747 /* IconUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F524462310490C0041D747 /* IconUtils.m */; };
 		A6F5244A231129B90041D747 /* UpcomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F52449231129B90041D747 /* UpcomingViewController.m */; };
 		A6F5244D2311362E0041D747 /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F5244C2311362E0041D747 /* CardView.m */; };
@@ -34,7 +38,6 @@
 		84B966DC222563A9002C3A08 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84B966DD222563A9002C3A08 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		84B966E3222563A9002C3A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		84B966E6222563A9002C3A08 /* rememberify.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = rememberify.xcdatamodel; sourceTree = "<group>"; };
 		84B966E8222563AB002C3A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84B966EB222563AB002C3A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84B966ED222563AB002C3A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,10 +47,19 @@
 		84F07609222F178700E8008C /* ChoosableLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChoosableLabel.h; sourceTree = "<group>"; };
 		84F0760A222F178700E8008C /* ChoosableLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChoosableLabel.m; sourceTree = "<group>"; };
 		A60219CE22C113B10082ACE3 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		A6179695232522620006AD18 /* RecallLog+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RecallLog+CoreDataProperties.h"; sourceTree = "<group>"; };
+		A6179696232522620006AD18 /* RecallLog+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RecallLog+CoreDataClass.h"; sourceTree = "<group>"; };
+		A6179697232522620006AD18 /* RecallLog+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RecallLog+CoreDataClass.m"; sourceTree = "<group>"; };
+		A6179698232522620006AD18 /* RecallLog+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RecallLog+CoreDataProperties.m"; sourceTree = "<group>"; };
+		A617969B232523330006AD18 /* TermToLearn+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TermToLearn+CoreDataProperties.h"; sourceTree = "<group>"; };
+		A617969C232523330006AD18 /* TermToLearn+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TermToLearn+CoreDataClass.h"; sourceTree = "<group>"; };
+		A617969D232523330006AD18 /* TermToLearn+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TermToLearn+CoreDataClass.m"; sourceTree = "<group>"; };
+		A617969E232523330006AD18 /* TermToLearn+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TermToLearn+CoreDataProperties.m"; sourceTree = "<group>"; };
 		A641C181230DA8D3002A5974 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		A641C182230DA8D3002A5974 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		A681D91423224C0E000D1010 /* TermMeaningModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermMeaningModel.h; sourceTree = "<group>"; };
 		A681D91523224C0E000D1010 /* TermMeaningModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermMeaningModel.m; sourceTree = "<group>"; };
+		A681D9202323D9B0000D1010 /* nutcracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = nutcracker.xcdatamodel; sourceTree = "<group>"; };
 		A6F524452310490C0041D747 /* IconUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IconUtils.h; sourceTree = "<group>"; };
 		A6F524462310490C0041D747 /* IconUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IconUtils.m; sourceTree = "<group>"; };
 		A6F52448231129B80041D747 /* UpcomingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpcomingViewController.h; sourceTree = "<group>"; };
@@ -95,7 +107,6 @@
 				84B966EA222563AB002C3A08 /* LaunchScreen.storyboard */,
 				84B966ED222563AB002C3A08 /* Info.plist */,
 				84B966EE222563AB002C3A08 /* main.m */,
-				84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */,
 				84F07606222C134200E8008C /* MeaningViewController.h */,
 				84F07607222C134200E8008C /* MeaningViewController.m */,
 				84F07609222F178700E8008C /* ChoosableLabel.h */,
@@ -114,6 +125,15 @@
 				A6F5244C2311362E0041D747 /* CardView.m */,
 				A681D91423224C0E000D1010 /* TermMeaningModel.h */,
 				A681D91523224C0E000D1010 /* TermMeaningModel.m */,
+				A681D91F2323D9B0000D1010 /* nutcracker.xcdatamodeld */,
+				A617969B232523330006AD18 /* TermToLearn+CoreDataProperties.h */,
+				A617969C232523330006AD18 /* TermToLearn+CoreDataClass.h */,
+				A617969D232523330006AD18 /* TermToLearn+CoreDataClass.m */,
+				A617969E232523330006AD18 /* TermToLearn+CoreDataProperties.m */,
+				A6179695232522620006AD18 /* RecallLog+CoreDataProperties.h */,
+				A6179696232522620006AD18 /* RecallLog+CoreDataClass.h */,
+				A6179697232522620006AD18 /* RecallLog+CoreDataClass.m */,
+				A6179698232522620006AD18 /* RecallLog+CoreDataProperties.m */,
 			);
 			path = nutcracker;
 			sourceTree = "<group>";
@@ -197,16 +217,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				A681D91623224C0E000D1010 /* TermMeaningModel.m in Sources */,
+				A681D9212323D9B0000D1010 /* nutcracker.xcdatamodeld in Sources */,
+				A6179699232522620006AD18 /* RecallLog+CoreDataClass.m in Sources */,
 				A6F524472310490C0041D747 /* IconUtils.m in Sources */,
 				84AF18612233ECAF0026DEB3 /* Cards.m in Sources */,
 				84AF185E2233BF3A0026DEB3 /* ChoosableDef.m in Sources */,
+				A61796A0232523330006AD18 /* TermToLearn+CoreDataProperties.m in Sources */,
 				A6F5244A231129B90041D747 /* UpcomingViewController.m in Sources */,
 				84F07608222C134200E8008C /* MeaningViewController.m in Sources */,
 				84B966DE222563A9002C3A08 /* AppDelegate.m in Sources */,
+				A617969A232522620006AD18 /* RecallLog+CoreDataProperties.m in Sources */,
+				A617969F232523330006AD18 /* TermToLearn+CoreDataClass.m in Sources */,
 				A6F5244D2311362E0041D747 /* CardView.m in Sources */,
 				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,
-				84B966E7222563A9002C3A08 /* rememberify.xcdatamodeld in Sources */,
 				A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 59EFNSJ7X2;
@@ -409,13 +434,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		84B966E5222563A9002C3A08 /* rememberify.xcdatamodeld */ = {
+		A681D91F2323D9B0000D1010 /* nutcracker.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				84B966E6222563A9002C3A08 /* rememberify.xcdatamodel */,
+				A681D9202323D9B0000D1010 /* nutcracker.xcdatamodel */,
 			);
-			currentVersion = 84B966E6222563A9002C3A08 /* rememberify.xcdatamodel */;
-			path = rememberify.xcdatamodeld;
+			currentVersion = A681D9202323D9B0000D1010 /* nutcracker.xcdatamodel */;
+			path = nutcracker.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

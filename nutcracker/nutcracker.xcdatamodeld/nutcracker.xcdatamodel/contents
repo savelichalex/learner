@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14886.2" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="RecallLog" representedClassName="RecallLog" syncable="YES">
+        <attribute name="attempt" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="ef" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="interval" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TermToLearn"/>
+    </entity>
+    <entity name="TermToLearn" representedClassName="TermToLearn" syncable="YES">
+        <attribute name="attempt" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="ef" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="forms" optional="YES" attributeType="Transformable"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="interval" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="term" optional="YES" attributeType="String"/>
+    </entity>
+    <fetchRequest name="UpcomingTermsToLearn" entity="TermToLearn" predicateString="date &lt;= $TODAY"/>
+    <elements>
+        <element name="RecallLog" positionX="112.76171875" positionY="8.33984375" width="128" height="118"/>
+        <element name="TermToLearn" positionX="-63" positionY="-18" width="128" height="148"/>
+    </elements>
+</model>

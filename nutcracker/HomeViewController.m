@@ -118,14 +118,7 @@
     [searchBar.leftAnchor constraintEqualToAnchor:searchBarContainer.leftAnchor constant:20].active = YES;
     [searchBar.rightAnchor constraintEqualToAnchor:searchBarContainer.rightAnchor constant:-20].active = YES;
     
-    // second half
-        [[Cards sharedInstance] addMWCards:@[@{
-                                                 @"word": @"allow",
-                                                 @"form": @"noun",
-                                                 @"headword": @"some headword",
-                                                 @"meaning": @"this is when you agree that someone will do smth"
-                                                 }]];
-    
+    // second half    
     activeCard = [[CardView alloc] init];
     
     [self.view addSubview:activeCard];

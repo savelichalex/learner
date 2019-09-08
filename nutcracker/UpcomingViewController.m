@@ -9,6 +9,7 @@
 #import "UpcomingViewController.h"
 #import "Cards.h"
 #import "HomeViewController.h"
+#import "TermMeaningModel.h"
 
 @interface UpcomingViewController ()
 
@@ -52,7 +53,7 @@
     [header.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:15].active = YES;
     [header.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-15].active = YES;
     
-    MWCard *upcoming = [[Cards sharedInstance] getUpcomingCard];
+    TermMeaningModel *upcoming = [[Cards sharedInstance] getUpcomingCard];
     
     if (upcoming == nil) {
         header.text = @"There're no new words to learn, please add smth.";
@@ -65,7 +66,7 @@
     word.translatesAutoresizingMaskIntoConstraints = NO;
     word.font = [UIFont systemFontOfSize:25 weight:UIFontWeightBold];
     word.textColor = [UIColor colorNamed:@"mainText"];
-    word.text = [upcoming.front uppercaseString];
+    word.text = [upcoming.term uppercaseString];
     
     [self.view addSubview:word];
     

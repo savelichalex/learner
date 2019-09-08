@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TermMeaningModel.h"
+#import "TermToLearn+CoreDataClass.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Cards : NSObject
 
 + (instancetype)sharedInstance;
-- (void)addMWCards:(NSArray<NSDictionary *>*)entries;
-- (MWCard *)getUpcomingCard;
-- (MWCard *)getNextToUpcomingCard;
+- (void)addTerm:(TermMeaningModel *)model;
+- (TermMeaningModel *)getUpcomingCard;
+- (TermMeaningModel *)getNextToUpcomingCard;
 
 @property (nonatomic, copy) NSArray *upcoming;
 

@@ -6,7 +6,9 @@
 //  Copyright © 2019 savelichalex. All rights reserved.
 //
 
+@import CoreData;
 #import "Cards.h"
+#import "AppDelegate.h"
 
 @implementation MWCard
 static NSString *cardType = @"MWCard";
@@ -17,13 +19,27 @@ static NSString *cardType = @"MWCard";
 
 @end
 
-@implementation Cards
+@implementation Cards {
+    NSArray<NSManagedObject *> *upcomingTerms;
+    NSManagedObjectContext *managedContext;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         _upcoming = [[NSMutableArray alloc] init];
+        
+        AppDelegate* appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        managedContext = appDelegate.persistentContainer.viewContext;
+        
+        NSError *error = nil;
+        upcomingTerms = [managedContext executeFetchRequest:[TermToLearn fetchRequest] error:&error];
+        
+        if (error != nil) {
+            // TODO: error here
+        }
+        
     }
     return self;
 }
@@ -38,31 +54,35 @@ static NSString *cardType = @"MWCard";
     return sharedInstance;
 }
 
-- (void)addMWCards:(NSArray<NSDictionary *>*)entries {
-    for (NSDictionary *dict in entries) {
-        MWCard *card = [[MWCard alloc] init];
-        [card setFront:[dict objectForKey:@"word"]];
-        [card setForm:[dict objectForKey:@"form"]];
-        [card setHeadword:[dict objectForKey:@"headword"]];
-        [card setMeaning:[dict objectForKey:@"meaning"]];
-        [card setExamples:[dict objectForKey:@"examples"]];
-         
-        [(NSMutableArray *)_upcoming addObject:card];
+- (void)addTerm:(TermMeaningModel *)model {
+    TermToLearn *termCoreDataModel = [NSEntityDescription insertNewObjectForEntityForName:@"TermToLearn" inManagedObjectContext:managedContext];
+    
+    termCoreDataModel.term = model.term;
+    termCoreDataModel.forms = model.forms;
+    termCoreDataModel.date = [NSDate date];
+    termCoreDataModel.ef = 2.5f;
+    termCoreDataModel.interval = 1;
+    termCoreDataModel.attempt = 1;
+    
+    NSError *error = nil;
+    if ([managedContext save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
 }
 
-- (MWCard *)getUpcomingCard {
-    if (_upcoming.count == 0) {
+- (TermMeaningModel *)getUpcomingCard {
+    if (upcomingTerms.count == 0) {
         return nil;
     }
-    return _upcoming[0];
+    
+    return [[TermMeaningModel alloc] initWithPersistedData:(TermToLearn *)upcomingTerms[0]];
 }
 
-- (MWCard *)getNextToUpcomingCard {
-    if (_upcoming.count < 2) {
+- (TermMeaningModel *)getNextToUpcomingCard {
+    if (upcomingTerms.count < 2) {
         return nil;
     }
-    return _upcoming[1];
+    return [[TermMeaningModel alloc] initWithPersistedData:(TermToLearn *)upcomingTerms[1]];
 }
 
 

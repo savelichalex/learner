@@ -239,17 +239,12 @@
 }
 
 - (void)onAdd {
-    NSMutableArray *entries = [[NSMutableArray alloc] init];
-    for (ChoosableDef* item in choosableDefs) {
-        if (item.isActive) {
-            [entries addObject:@{@"word": _word,
-                                 @"form": item.type,
-                                 @"headword": item.headword,
-                                 @"meaning": item.item.meaning,
-                                 @"examples": item.item.examples}];
+    for (ChoosableDef* def in choosableDefs) {
+        if (def.isActive) {
+            def.item.isChoosedForLearning = YES;
         }
     }
-    [[Cards sharedInstance] addMWCards:entries];
+    [[Cards sharedInstance] addTerm:term];
     
     HomeViewController* parent = (HomeViewController *)self.parentViewController;
     [parent closeCard];
