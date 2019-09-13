@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TermMeaningDef : NSObject<NSCoding>
+@interface TermMeaningDef : NSObject<NSSecureCoding>
 
 @property (nonatomic, copy) NSString *meaning;
 @property (nonatomic, copy) NSArray *examples;
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface TermMeaningForm : NSObject<NSCoding>
+@interface TermMeaningForm : NSObject<NSSecureCoding>
 
 @property (readonly) NSString *form;
 @property (readonly) NSString *pron;

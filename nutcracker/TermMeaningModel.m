@@ -46,8 +46,8 @@ NSString* getClassName(xmlNodePtr node) {
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super init];
     if (self) {
-        self.meaning = [coder decodeObjectForKey:@"meaning"];
-        self.examples = [coder decodeObjectForKey:@"examples"];
+        self.meaning = [coder decodeObjectOfClass:[NSString class] forKey:@"meaning"];
+        self.examples = [coder decodeObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSString class], nil] forKey:@"examples"];
         self.isChoosedForLearning = [coder decodeBoolForKey:@"isChoosedForLearning"];
     }
     return self;
@@ -57,6 +57,10 @@ NSString* getClassName(xmlNodePtr node) {
     [coder encodeObject:self.meaning forKey:@"meaning"];
     [coder encodeObject:self.examples forKey:@"examples"];
     [coder encodeBool:self.isChoosedForLearning forKey:@"isChoosedForLearning"];
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
 }
 
 @end
@@ -78,9 +82,9 @@ NSString* getClassName(xmlNodePtr node) {
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super init];
     if (self) {
-        self.form = [coder decodeObjectForKey:@"form"];
-        self.pron = [coder decodeObjectForKey:@"pron"];
-        self.defs = [coder decodeObjectForKey:@"defs"];
+        self.form = [coder decodeObjectOfClass:[NSString class] forKey:@"form"];
+        self.pron = [coder decodeObjectOfClass:[NSString class] forKey:@"pron"];
+        self.defs = [coder decodeObjectOfClasses:[NSSet setWithObjects:[NSArray class], [TermMeaningDef class], nil] forKey:@"defs"];
     }
     return self;
 }
@@ -89,6 +93,10 @@ NSString* getClassName(xmlNodePtr node) {
     [coder encodeObject:self.form forKey:@"form"];
     [coder encodeObject:self.pron forKey:@"pron"];
     [coder encodeObject:self.defs forKey:@"defs"];
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
 }
 
 @end
@@ -167,13 +175,13 @@ NSString* getClassName(xmlNodePtr node) {
             
             xmlNodePtr node = nodes->nodeTab[i];
             
-            xmlNodePtr posHeader = node->children;
+            xmlNodePtr posHeader = node->children->next;
             for (; posHeader; posHeader = posHeader->next) {
                 NSString *className = getClassName(posHeader);
                 if (className == NULL) {
                     continue;
                 }
-                if ([className isEqualToString:@"pos-header"]) {
+                if ([className rangeOfString:@"pos-header"].location != NSNotFound) {
                     break;
                 }
             }
@@ -200,7 +208,7 @@ NSString* getClassName(xmlNodePtr node) {
                 return;
             }
             
-            NSString *posQuery = @"//*[@class='pos']";
+            NSString *posQuery = @"//*[contains(concat(' ', normalize-space(@class), ' '), ' pos ')]";
             xpathObj = xmlXPathEvalExpression((xmlChar *)[posQuery cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
             
             if (xpathObj == NULL) {
@@ -226,7 +234,7 @@ NSString* getClassName(xmlNodePtr node) {
             
             xmlXPathFreeObject(xpathObj);
             
-            NSString *pronQuery = @"//*[@class='ipa']";
+            NSString *pronQuery = @"//*[contains(concat(' ', normalize-space(@class), ' '), ' ipa ')]";
             xpathObj = xmlXPathEvalExpression((xmlChar *)[pronQuery cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
             
             if (xpathObj == NULL) {
@@ -246,7 +254,7 @@ NSString* getClassName(xmlNodePtr node) {
                 xmlChar *nodeContent = xmlNodeGetContent(node);
                 
                 // TODO: check for us
-                if ([getClassName(node->parent->parent) isEqualToString:@"us"]) {
+                if ([getClassName(node->parent->parent) rangeOfString:@"us"].location != NSNotFound) {
                     termMeaning.pron = [NSString stringWithUTF8String:(const char *)nodeContent];
                 }
                 
@@ -262,7 +270,7 @@ NSString* getClassName(xmlNodePtr node) {
                 if (className == NULL) {
                     continue;
                 }
-                if ([className isEqualToString:@"pos-body"]) {
+                if ([className rangeOfString:@"pos-body"].location != NSNotFound) {
                     break;
                 }
             }
@@ -312,7 +320,7 @@ NSString* getClassName(xmlNodePtr node) {
                 
                 xpathCtx = xmlXPathNewContext((xmlDocPtr)node);
                 
-                NSString *defQuery = @"//*[@class='def']";
+                NSString *defQuery = @"//*[contains(concat(' ', normalize-space(@class), ' '), ' def ')]";
                 xpathObj = xmlXPathEvalExpression((xmlChar *)[defQuery cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
                 
                 if (xpathObj == NULL) {

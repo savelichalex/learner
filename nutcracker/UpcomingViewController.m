@@ -53,7 +53,7 @@
     [header.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:15].active = YES;
     [header.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-15].active = YES;
     
-    TermMeaningModel *upcoming = [[Cards sharedInstance] getUpcomingCard];
+    TermToLearn *upcoming = [[Cards sharedInstance] getUpcomingCard];
     
     if (upcoming == nil) {
         header.text = @"There're no new words to learn, please add smth.";
@@ -147,6 +147,13 @@
     }];
     
     [_animator startAnimation];
+}
+
+- (void)hideHeader {
+    self->header.layer.opacity = 0.0;
+}
+- (void)showHeader {
+    self->header.layer.opacity = 1.0;
 }
 
 - (void)onShowAnswerTap:(UIButton *)button {

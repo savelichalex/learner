@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, CardQualityFeedback) {
 - (void)closeToLearn;
 - (void)setLearnState;
 
+- (void)showHeader;
+- (void)hideHeader;
+
 @end
 
 NS_ASSUME_NONNULL_END

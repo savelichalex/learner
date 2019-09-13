@@ -47,6 +47,9 @@
 }
 
 + (float)getNewEFForQuality:(QualityResponse)q withRecallAttempt:(NSInteger)n andOldEF:(float)ef {
+    if (n == 1) {
+        return 2.5;
+    }
     // EF':=EF+(0.1-(5-q)*(0.08+(5-q)*0.02))
     float newEF = ef + (0.1 - (float)(5 - q) * (0.08 + (float)(5 - q) * 0.02));
     

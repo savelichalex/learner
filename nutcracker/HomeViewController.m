@@ -237,6 +237,9 @@
 }
 
 - (void)placeTableViewToCard {
+    if (tableView != nil) {
+        return;
+    }
     tableView = [[UITableView alloc] init];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -563,6 +566,7 @@
         
         //[this->searchBar resignFirstResponder];
         [this->tableView removeFromSuperview];
+        this->tableView = nil;
         this->state = CardViewStateClosed;
     }];
     
@@ -650,6 +654,7 @@
         [this->meaningVC removeFromParentViewController];
         
         [this->tableView removeFromSuperview];
+        this->tableView = nil;
         
         this->state = CardViewStateClosed;
     }];
@@ -714,6 +719,10 @@
         this->activeCard.closedConstraint.active = NO;
         this->activeCard.learningConstraint.active = YES;
         this->activeCard.backgroundColor = [UIColor colorNamed:@"card"];
+        
+        if ([[Cards sharedInstance] getUpcomingCard] == nil) {
+            [this->learningVC showHeader];
+        }
         
         [this->activeCard layoutIfNeeded];
     }];

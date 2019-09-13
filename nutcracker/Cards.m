@@ -33,19 +33,7 @@ static NSString *cardType = @"MWCard";
         
         AppDelegate* appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         managedContext = appDelegate.persistentContainer.viewContext;
-        
-        NSError *error = nil;
-        upcomingTerms = [managedContext executeFetchRequest:[TermToLearn fetchRequest] error:&error];
-        
-//        for (NSManagedObject *o in upcomingTerms) {
-//            [managedContext deleteObject:o];
-//        }
-//        [managedContext save:&error];
-        
-        if (error != nil) {
-            // TODO: error here
-        }
-        
+        [self updateUpcoming];
     }
     return self;
 }
@@ -60,19 +48,17 @@ static NSString *cardType = @"MWCard";
     return sharedInstance;
 }
 
-- (void)addTerm:(TermMeaningModel *)model {
-    TermToLearn *termCoreDataModel = [NSEntityDescription insertNewObjectForEntityForName:@"TermToLearn" inManagedObjectContext:managedContext];
-    
-    termCoreDataModel.term = model.term;
-    termCoreDataModel.forms = model.forms;
-    termCoreDataModel.date = [NSDate date];
-    termCoreDataModel.ef = 2.5f;
-    termCoreDataModel.interval = 1;
-    termCoreDataModel.attempt = 1;
-    
+- (void)updateUpcoming {
     NSError *error = nil;
-    if ([managedContext save:&error] == NO) {
-        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    upcomingTerms = [managedContext executeFetchRequest:[TermToLearn fetchRequest] error:&error];
+            
+    // for (NSManagedObject *o in upcomingTerms) {
+    //     [managedContext deleteObject:o];
+    // }
+    // [managedContext save:&error];
+            
+    if (error != nil) {
+        // TODO: error here
     }
 }
 
@@ -91,6 +77,20 @@ static NSString *cardType = @"MWCard";
     return (TermToLearn *)upcomingTerms[1];
 }
 
+- (void)addTerm:(TermMeaningModel *)model {
+    TermToLearn *termCoreDataModel = [NSEntityDescription insertNewObjectForEntityForName:@"TermToLearn" inManagedObjectContext:managedContext];
+    
+    termCoreDataModel.term = model.term;
+    termCoreDataModel.forms = model.forms;
+    [SM2 calculateResults:termCoreDataModel withQuiality:QualityResponsePerfect];
+    // termCoreDataModel.date = [NSDate now]; // Use it for debug
+    
+    NSError *error = nil;
+    if ([managedContext save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
+}
+
 - (void)applyQualityToCurrentUpcomingTerm:(QualityResponse)quality {
     TermToLearn *model = [self getUpcomingCard];
     
@@ -102,6 +102,8 @@ static NSString *cardType = @"MWCard";
     if ([managedContext save:&error] == NO) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
+    
+    [self updateUpcoming];
 }
 
 
