@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TermToLearn+CoreDataClass.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,8 @@ typedef NS_ENUM(NSInteger, QualityResponse) {
 };
 
 @interface SM2 : NSObject
+
++ (void)calculateResults:(TermToLearn *)model withQuiality:(QualityResponse)response;
 
 @end
 

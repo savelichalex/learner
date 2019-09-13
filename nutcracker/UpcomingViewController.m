@@ -150,7 +150,7 @@
 }
 
 - (void)onShowAnswerTap:(UIButton *)button {
-    TermMeaningModel *upcoming = [[Cards sharedInstance] getUpcomingCard];
+    TermToLearn *upcoming = [[Cards sharedInstance] getUpcomingCard];
     
     UIScrollView *answerStackWrapper = [[UIScrollView alloc] init];
     answerStackWrapper.translatesAutoresizingMaskIntoConstraints = NO;
@@ -215,10 +215,15 @@
     UIButton *perfect = [self getStyledButton:@"Perfect response"];
     [perfect addTarget:self action:@selector(onPerfect) forControlEvents:UIControlEventTouchUpInside];
     UIButton *correctWithHesi = [self getStyledButton:@"Correct after hesitation"];
-    UIButton *correctWithDifficulty = [self getStyledButton:@"Currect with difficulty"];;
+    [correctWithHesi addTarget:self action:@selector(onCorrectWithHesi) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *correctWithDifficulty = [self getStyledButton:@"Currect with difficulty"];
+    [correctWithDifficulty addTarget:self action:@selector(onCorrectWithDifficulty) forControlEvents:UIControlEventTouchUpInside];
     UIButton *incorrectButAnswerEasyToRecall = [self getStyledButton:@"Incorrect, answer is easy"];
+    [incorrectButAnswerEasyToRecall addTarget:self action:@selector(onIncorrectButAnswerEasyToRecall) forControlEvents:UIControlEventTouchUpInside];
     UIButton *incorrectButAnswerKnown = [self getStyledButton:@"Incorrect, answer is known"];
+    [incorrectButAnswerKnown addTarget:self action:@selector(onIncorrectButAnswerKnown) forControlEvents:UIControlEventTouchUpInside];
     UIButton *blackout = [self getStyledButton:@"Complete blackout"];
+    [blackout addTarget:self action:@selector(onBlackout) forControlEvents:UIControlEventTouchUpInside];
     
     answerQualityButtons = [[UIStackView alloc] initWithArrangedSubviews:@[
         perfect,
@@ -263,6 +268,37 @@
 }
 
 - (void)onPerfect {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponsePerfect];
+    HomeViewController *parent = (HomeViewController *)self.parentViewController;
+    [parent showNextCard];
+}
+
+- (void)onCorrectWithHesi {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponseCorrectWithHesitation];
+    HomeViewController *parent = (HomeViewController *)self.parentViewController;
+    [parent showNextCard];
+}
+
+- (void)onCorrectWithDifficulty {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponseCorrectButDifficult];
+    HomeViewController *parent = (HomeViewController *)self.parentViewController;
+    [parent showNextCard];
+}
+
+- (void)onIncorrectButAnswerEasyToRecall {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponseIncorrectButEasyToRecall];
+    HomeViewController *parent = (HomeViewController *)self.parentViewController;
+    [parent showNextCard];
+}
+
+- (void)onIncorrectButAnswerKnown {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponseIncorrectButRemember];
+    HomeViewController *parent = (HomeViewController *)self.parentViewController;
+    [parent showNextCard];
+}
+
+- (void)onBlackout {
+    [[Cards sharedInstance] applyQualityToCurrentUpcomingTerm:QualityResponseCompleteBlackout];
     HomeViewController *parent = (HomeViewController *)self.parentViewController;
     [parent showNextCard];
 }

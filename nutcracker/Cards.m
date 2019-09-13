@@ -9,6 +9,7 @@
 @import CoreData;
 #import "Cards.h"
 #import "AppDelegate.h"
+#import "SM2.h"
 
 @implementation MWCard
 static NSString *cardType = @"MWCard";
@@ -75,19 +76,32 @@ static NSString *cardType = @"MWCard";
     }
 }
 
-- (TermMeaningModel *)getUpcomingCard {
+- (TermToLearn *)getUpcomingCard {
     if (upcomingTerms.count == 0) {
         return nil;
     }
     
-    return [[TermMeaningModel alloc] initWithPersistedData:(TermToLearn *)upcomingTerms[0]];
+    return (TermToLearn *)upcomingTerms[0];
 }
 
-- (TermMeaningModel *)getNextToUpcomingCard {
+- (TermToLearn *)getNextToUpcomingCard {
     if (upcomingTerms.count < 2) {
         return nil;
     }
-    return [[TermMeaningModel alloc] initWithPersistedData:(TermToLearn *)upcomingTerms[1]];
+    return (TermToLearn *)upcomingTerms[1];
+}
+
+- (void)applyQualityToCurrentUpcomingTerm:(QualityResponse)quality {
+    TermToLearn *model = [self getUpcomingCard];
+    
+    [SM2 calculateResults:model withQuiality:quality];
+    
+    // TODO: log here
+    
+    NSError *error = nil;
+    if ([managedContext save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
 }
 
 

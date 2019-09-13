@@ -21,6 +21,7 @@
 		A617969A232522620006AD18 /* RecallLog+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = A6179698232522620006AD18 /* RecallLog+CoreDataProperties.m */; };
 		A617969F232523330006AD18 /* TermToLearn+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A617969D232523330006AD18 /* TermToLearn+CoreDataClass.m */; };
 		A61796A0232523330006AD18 /* TermToLearn+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = A617969E232523330006AD18 /* TermToLearn+CoreDataProperties.m */; };
+		A61796A323257C430006AD18 /* SM2.m in Sources */ = {isa = PBXBuildFile; fileRef = A61796A223257C430006AD18 /* SM2.m */; };
 		A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A641C182230DA8D3002A5974 /* HomeViewController.m */; };
 		A681D91623224C0E000D1010 /* TermMeaningModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A681D91523224C0E000D1010 /* TermMeaningModel.m */; };
 		A681D9212323D9B0000D1010 /* nutcracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A681D91F2323D9B0000D1010 /* nutcracker.xcdatamodeld */; };
@@ -55,6 +56,8 @@
 		A617969C232523330006AD18 /* TermToLearn+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TermToLearn+CoreDataClass.h"; sourceTree = "<group>"; };
 		A617969D232523330006AD18 /* TermToLearn+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TermToLearn+CoreDataClass.m"; sourceTree = "<group>"; };
 		A617969E232523330006AD18 /* TermToLearn+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TermToLearn+CoreDataProperties.m"; sourceTree = "<group>"; };
+		A61796A123257C430006AD18 /* SM2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SM2.h; sourceTree = "<group>"; };
+		A61796A223257C430006AD18 /* SM2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SM2.m; sourceTree = "<group>"; };
 		A641C181230DA8D3002A5974 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		A641C182230DA8D3002A5974 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		A681D91423224C0E000D1010 /* TermMeaningModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermMeaningModel.h; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 				A6179696232522620006AD18 /* RecallLog+CoreDataClass.h */,
 				A6179697232522620006AD18 /* RecallLog+CoreDataClass.m */,
 				A6179698232522620006AD18 /* RecallLog+CoreDataProperties.m */,
+				A61796A123257C430006AD18 /* SM2.h */,
+				A61796A223257C430006AD18 /* SM2.m */,
 			);
 			path = nutcracker;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 				A617969A232522620006AD18 /* RecallLog+CoreDataProperties.m in Sources */,
 				A617969F232523330006AD18 /* TermToLearn+CoreDataClass.m in Sources */,
 				A6F5244D2311362E0041D747 /* CardView.m in Sources */,
+				A61796A323257C430006AD18 /* SM2.m in Sources */,
 				84F0760B222F178700E8008C /* ChoosableLabel.m in Sources */,
 				84B966EF222563AB002C3A08 /* main.m in Sources */,
 				A641C183230DA8D3002A5974 /* HomeViewController.m in Sources */,

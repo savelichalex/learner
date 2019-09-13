@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TermMeaningModel.h"
 #import "TermToLearn+CoreDataClass.h"
+#import "SM2.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,8 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedInstance;
 - (void)addTerm:(TermMeaningModel *)model;
-- (TermMeaningModel *)getUpcomingCard;
-- (TermMeaningModel *)getNextToUpcomingCard;
+- (TermToLearn *)getUpcomingCard;
+- (TermToLearn *)getNextToUpcomingCard;
+
+- (void)applyQualityToCurrentUpcomingTerm:(QualityResponse)quality;
 
 @property (nonatomic, copy) NSArray *upcoming;
 

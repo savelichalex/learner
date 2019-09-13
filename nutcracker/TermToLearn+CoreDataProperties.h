@@ -8,7 +8,7 @@
 //
 
 #import "TermToLearn+CoreDataClass.h"
-
+#import "TermMeaningModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int16_t attempt;
 @property (nullable, nonatomic, copy) NSDate *date;
 @property (nonatomic) float ef;
-@property (nullable, nonatomic, retain) NSObject *forms;
+@property (nullable, nonatomic, retain) NSArray<NSObject *> *forms;
 @property (nonatomic) int16_t interval;
 @property (nullable, nonatomic, copy) NSString *term;
 

@@ -10,30 +10,28 @@
 
 @implementation SM2
 
-- (void)calculateResults:(QualityResponse)response {
-    NSInteger recall = [self.attemptInput integerValue];
-    NSInteger prevInterval = [self.intervalInput integerValue];
-    float ef = [self.efInput floatValue];
++ (void)calculateResults:(TermToLearn *)model withQuiality:(QualityResponse)response {
+    NSInteger newRecall = model.attempt + 1;
+    NSInteger prevInterval = model.interval;
+    float ef = model.ef;
     
-    NSInteger newInterval = [self getIntervalForAttempt:recall withPrevInterval:prevInterval andEF:ef];
-    float newEF = [self getNewEFForQuality:response withRecallAttempt:recall andOldEF:ef];
+    NSInteger newInterval = [self getIntervalForAttempt:newRecall withPrevInterval:prevInterval andEF:ef];
+    float newEF = [self getNewEFForQuality:response withRecallAttempt:newRecall andOldEF:ef];
     
     if (response < 3) {
-        recall = 1;
-        newInterval = [self getIntervalForAttempt:recall withPrevInterval:prevInterval andEF:ef];
+        newRecall = 1;
+        newInterval = [self getIntervalForAttempt:newRecall withPrevInterval:prevInterval andEF:ef];
     }
     
     NSDate *nextRecallDate = [NSDate dateWithTimeIntervalSinceNow:(60 * 60 * 24 * newInterval)];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd MMM yyyy"];
-    NSString *nextRecallDateString = [formatter stringFromDate:nextRecallDate];
     
-    NSString *res = [NSString stringWithFormat:@"Next recall will be at %@, store following for next use: attempt - %li, interval - %li, ef - %f", nextRecallDateString, recall, newInterval, newEF];
-    NSLog(@"%@", res);
-    [self.resultLabel setStringValue:res];
+    model.attempt = newRecall;
+    model.interval = newInterval;
+    model.ef = newEF;
+    model.date = nextRecallDate;
 }
 
-- (NSInteger)getIntervalForAttempt:(NSInteger)n withPrevInterval:(NSInteger)i andEF:(float)ef {
++ (NSInteger)getIntervalForAttempt:(NSInteger)n withPrevInterval:(NSInteger)i andEF:(float)ef {
     if (n < 1) {
         @throw [NSException exceptionWithName:@"Incorrect recall number" reason:nil userInfo:nil];
     }
@@ -48,7 +46,7 @@
     return lroundf((float)i * ef);
 }
 
-- (float)getNewEFForQuality:(QualityResponse)q withRecallAttempt:(NSInteger)n andOldEF:(float)ef {
++ (float)getNewEFForQuality:(QualityResponse)q withRecallAttempt:(NSInteger)n andOldEF:(float)ef {
     // EF':=EF+(0.1-(5-q)*(0.08+(5-q)*0.02))
     float newEF = ef + (0.1 - (float)(5 - q) * (0.08 + (float)(5 - q) * 0.02));
     
